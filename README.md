@@ -45,9 +45,17 @@ the container exits with code 2 and logs the reason.
 | `FHIR_SDC_LICENSE_PUBKEY` | Override the verification pubkey (PEM string) | embedded |
 | `FHIR_SDC_LICENSE_PUBKEY_FILE` | Override the verification pubkey (PEM file) | embedded |
 | `FHIR_SDC_LICENSE_SKIP` | `1` bypasses the gate — **dev only** | unset |
-| `STRUCTURE_DEFINITIONS_DIR` | Folder of FHIR `StructureDefinition` JSON files | `./data/structure-definitions/` |
+| `STRUCTURE_DEFINITIONS_DIR` | Folder of FHIR `StructureDefinition` JSON files | `/app/data/structure-definitions/` (in image) / `./data/structure-definitions/` (dev) |
 | `HOST` | uvicorn bind host | `0.0.0.0` |
 | `PORT` | uvicorn bind port | `8000` |
+
+### Tamper hardening (image only)
+
+The published Docker image installs `sdc_server` and `fhir_sdc` as bytecode
+(`.pyc`) and strips the `.py` sources, then `chmod a-w`s the install dirs and
+bundled data. The runtime container user can't edit the license check (or any
+shipped code) in place. Bytecode decompilers still exist — this stops casual
+edits, not a determined attacker. Customers wanting source must contact us.
 
 ---
 

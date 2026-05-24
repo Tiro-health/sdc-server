@@ -54,14 +54,29 @@ RUN chmod +x /usr/local/bin/entrypoint.sh \
     && pip install --no-cache-dir 'fastapi[standard]>=0.112.0' 'pyjwt>=2.8' 'cryptography>=42' \
     && rm -rf /wheels
 
-# Non-root user
+# Tamper hardening: replace .py sources with .pyc bytecode in the installed
+# packages and lock the install dir read-only. Casual edits ("docker exec, vim
+# license_gate.py, restart") stop working — bytecode can still be decompiled,
+# but raises the bar. See Level 2 (signed-manifest startup check) for the
+# follow-up if tampering shows up in practice.
+RUN SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')" \
+    && python -m compileall -q -b "$SITE_PACKAGES/sdc_server" "$SITE_PACKAGES/fhir_sdc" \
+    && find "$SITE_PACKAGES/sdc_server" "$SITE_PACKAGES/fhir_sdc" \
+            \( -name '*.py' -o -name '__pycache__' \) -exec rm -rf {} + \
+    && rm -rf /app/src /app/pyproject.toml /app/README.md
+
+# Non-root user. Install dirs and bundled data are chmod'd read-only so the
+# runtime user cannot modify code or shipped StructureDefinitions in place.
 RUN useradd --create-home --uid 10001 sdc \
     && mkdir -p /etc/sdc-server \
-    && chown -R sdc /app /etc/sdc-server
+    && chown -R sdc /etc/sdc-server \
+    && SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')" \
+    && chmod -R a-w "$SITE_PACKAGES/sdc_server" "$SITE_PACKAGES/fhir_sdc" /app/data /usr/local/bin/entrypoint.sh
 USER sdc
 
 ENV PORT=8000 \
-    HOST=0.0.0.0
+    HOST=0.0.0.0 \
+    STRUCTURE_DEFINITIONS_DIR=/app/data/structure-definitions
 
 EXPOSE 8000
 
