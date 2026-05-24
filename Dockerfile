@@ -1,46 +1,16 @@
 # syntax=docker/dockerfile:1.7
-# Build the fhir-sdc wheel with maturin from a pinned git ref, then assemble
-# a slim runtime image that ships sdc-server behind the JWT license gate.
+# Slim runtime image that ships sdc-server behind the JWT license gate.
 #
-# fhir-sdc-rs is currently private, so the build needs BuildKit SSH forwarding
-# (the key never lands in the image — it's only borrowed during the clone
-# step). The published binary image does NOT need SSH access; customers pull
-# the prebuilt image normally.
+# fhir-sdc is consumed as a prebuilt wheel from Tiro's private GAR (atticus),
+# so the build no longer needs a Rust toolchain. The access token is mounted
+# as a BuildKit secret and never lands in any layer.
 #
 # Build:
-#     docker build --ssh default -t sdc-server .
+#     gcloud auth print-access-token > /tmp/gar-token
+#     docker build --secret id=gar_token,src=/tmp/gar-token -t sdc-server .
 #
-# To target a different fhir-sdc ref:
-#     docker build --ssh default --build-arg FHIR_SDC_REF=v0.1.0-rc9 -t sdc-server .
+# (See README for the keypair / license-minting workflow before publishing.)
 
-ARG FHIR_SDC_REF=v0.1.0-rc8
-
-# --- Stage 1: build the fhir-sdc wheel ------------------------------------
-FROM rust:1.86-slim-bookworm AS wheel-builder
-ARG FHIR_SDC_REF
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        python3 python3-dev python3-pip python3-venv \
-        git openssh-client pkg-config build-essential ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN python3 -m venv /opt/maturin-venv \
-    && /opt/maturin-venv/bin/pip install --no-cache-dir maturin
-ENV PATH="/opt/maturin-venv/bin:${PATH}"
-
-WORKDIR /build
-RUN --mount=type=ssh \
-    mkdir -p -m 0700 /root/.ssh \
-    && ssh-keyscan github.com >> /root/.ssh/known_hosts 2>/dev/null \
-    && git clone --depth 1 --branch "${FHIR_SDC_REF}" \
-        ssh://git@github.com/Tiro-health/fhir-sdc-rs.git fhir-sdc-rs
-
-RUN cd fhir-sdc-rs \
-    && maturin build --release --out /wheels \
-        --manifest-path crates/fhir-sdc-py/Cargo.toml
-
-# --- Stage 2: runtime -----------------------------------------------------
 FROM python:3.12-slim-bookworm AS runtime
 
 RUN apt-get update \
@@ -49,19 +19,21 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY --from=wheel-builder /wheels /wheels
 COPY pyproject.toml README.md ./
 COPY src ./src
 COPY data ./data
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Install the fhir-sdc wheel first so the resolver finds it before reading
-# pyproject's git source (which it would otherwise try to clone over SSH).
-RUN chmod +x /usr/local/bin/entrypoint.sh \
-    && pip install --no-cache-dir /wheels/*.whl \
-    && pip install --no-cache-dir --no-deps . \
+# Install fhir-sdc from atticus using a short-lived gcloud access token, then
+# everything else (FastAPI, pyjwt, cryptography) from public PyPI, then this
+# package itself (sdc-server) without re-resolving its deps.
+RUN --mount=type=secret,id=gar_token,required=true \
+    chmod +x /usr/local/bin/entrypoint.sh \
+    && pip install --no-cache-dir \
+        --index-url "https://oauth2accesstoken:$(cat /run/secrets/gar_token)@europe-west1-python.pkg.dev/tiroapp-4cb17/atticus/simple/" \
+        'fhir-sdc==0.1.0' \
     && pip install --no-cache-dir 'fastapi[standard]>=0.112.0' 'pyjwt>=2.8' 'cryptography>=42' \
-    && rm -rf /wheels
+    && pip install --no-cache-dir --no-deps .
 
 # Tamper hardening: bake ALLOW_LICENSE_SKIP=False into the bytecode (so the
 # FHIR_SDC_LICENSE_SKIP env var is a no-op in the published image), then

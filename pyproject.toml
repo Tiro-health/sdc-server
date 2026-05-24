@@ -8,7 +8,7 @@ license = { text = "BUSL-1.1" }
 authors = [{ name = "Tiro.health" }]
 dependencies = [
     "fastapi[standard]>=0.112.0",
-    "fhir-sdc",
+    "fhir-sdc==0.1.0",
     "pyjwt>=2.8",
     "cryptography>=42",
 ]
@@ -22,11 +22,22 @@ packages = ["src/sdc_server"]
 
 [tool.uv]
 managed = true
+# Resolve credentials for private indexes (atticus GAR) via the system keyring.
+# Pair with `keyrings.google-artifactregistry-auth` so gcloud's ADC is used —
+# see README for the setup. The Docker build mounts a short-lived access token
+# instead (no keyring inside the image).
+keyring-provider = "subprocess"
 
-# Pin fhir-sdc to a specific git tag. The Docker build re-pins the same ref
-# via the FHIR_SDC_REF build arg (see Dockerfile) — keep the two in sync.
+# Atticus — Tiro's private Google Artifact Registry. The fhir-sdc wheel lives
+# here. `explicit = true` means uv only consults this index for packages whose
+# source explicitly names it, so PyPI keeps serving everything else.
+[[tool.uv.index]]
+name = "atticus"
+url = "https://europe-west1-python.pkg.dev/tiroapp-4cb17/atticus/simple/"
+explicit = true
+
 [tool.uv.sources]
-fhir-sdc = { git = "ssh://git@github.com/tiro-health/fhir-sdc-rs.git", tag = "v0.1.0-rc8" }
+fhir-sdc = { index = "atticus" }
 
 [dependency-groups]
 dev = [

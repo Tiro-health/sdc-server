@@ -126,17 +126,28 @@ Any other error returns an `OperationOutcome`.
 
 ## Development
 
+`fhir-sdc` is consumed as a prebuilt wheel from Tiro's private Google Artifact
+Registry repo (`atticus`). One-time setup so `uv sync` can authenticate:
+
 ```bash
-uv sync                                  # fetches the pinned fhir-sdc wheel + installs sdc-server
+# Authenticate gcloud (project must be tiroapp-4cb17 or a tiro.health account)
+gcloud auth login
+gcloud auth application-default login
+
+# Install the keyring backend that hands GAR credentials to uv/pip
+uv tool install keyrings.google-artifactregistry-auth
+```
+
+Then:
+
+```bash
+uv sync
 FHIR_SDC_LICENSE_SKIP=1 uv run fastapi dev main.py
 ```
 
-`uv sync` resolves `fhir-sdc` from the git ref pinned in
-[`pyproject.toml`](pyproject.toml) under `[tool.uv.sources]`. Bumping the
-underlying `fhir-sdc-rs` version is a two-line change:
-
-1. Update the `tag` in `[tool.uv.sources]`.
-2. Update the `FHIR_SDC_REF` arg default in [`Dockerfile`](Dockerfile).
+`uv sync` reads the index entry in [`pyproject.toml`](pyproject.toml) and
+fetches `fhir-sdc==0.1.0` from atticus through the keyring. Bumping the
+version is a one-line change to `dependencies = [...]`.
 
 Tests (the conftest sets `FHIR_SDC_LICENSE_SKIP=1` automatically):
 
@@ -144,12 +155,11 @@ Tests (the conftest sets `FHIR_SDC_LICENSE_SKIP=1` automatically):
 uv run pytest
 ```
 
-Build the image locally (needs an SSH agent loaded with a key that can read
-the private `fhir-sdc-rs` repo — the key is only borrowed during the build
-and does **not** land in the published image):
+Build the image locally (needs a short-lived GAR access token mounted as a
+BuildKit secret — the token does **not** land in the published image):
 
 ```bash
-docker build --ssh default -t sdc-server:dev .
-# or override the pinned ref:
-docker build --ssh default --build-arg FHIR_SDC_REF=v0.1.0-rc9 -t sdc-server:dev .
+gcloud auth print-access-token > /tmp/gar-token
+docker build --secret id=gar_token,src=/tmp/gar-token -t sdc-server:dev .
+shred -u /tmp/gar-token   # tokens expire in ~1h anyway, but tidy up
 ```
