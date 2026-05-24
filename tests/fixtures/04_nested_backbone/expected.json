@@ -1,0 +1,13 @@
+[
+  {
+    "profile": "http://example.org/SD/Person",
+    "value": {
+      "address": {
+        "city": "Brussels",
+        "street": "Rue de la Loi 16",
+        "zip": "1000"
+      },
+      "name": "Alice"
+    }
+  }
+]

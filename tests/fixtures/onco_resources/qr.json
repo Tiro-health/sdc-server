@@ -1,0 +1,473 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "Questionnaire/TrastuzumabV1",
+  "status": "completed",
+  "subject": {
+    "reference": "Patient/ad1cf7a8-8d18-475e-8277-98d5b1bb7d6a"
+  },
+  "authored": "2026-01-08T13:45:38.6348994+01:00",
+  "item": [
+    {
+      "linkId": "NursingAssessment",
+      "text": "Nursing Assessment",
+      "item": [
+        {
+          "linkId": "MedicationStorage",
+          "text": "Medication Storage",
+          "item": [
+            {
+              "linkId": "A1_MedicationStorage",
+              "text": "Are there any comments or concerns regarding the (correct) home storage of the medication?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "710977001",
+                    "display": "Safe storage of medication"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "ObservationParameters",
+          "text": "Observation Parameters",
+          "item": [
+            {
+              "linkId": "B1_BodyTemperature",
+              "text": "Body temperature:",
+              "answer": [
+                {
+                  "valueDecimal": 0
+                }
+              ]
+            },
+            {
+              "linkId": "B2_HeartRate",
+              "text": "Heart rate:",
+              "answer": [
+                {
+                  "valueDecimal": 0
+                }
+              ]
+            },
+            {
+              "linkId": "B3_SystolicBloodPressure",
+              "text": "Systolic blood pressure:",
+              "answer": [
+                {
+                  "valueDecimal": 0
+                }
+              ]
+            },
+            {
+              "linkId": "B4_DiastolicBloodPressure",
+              "text": "Diastolic blood pressure:",
+              "answer": [
+                {
+                  "valueDecimal": 0
+                }
+              ]
+            },
+            {
+              "linkId": "B5_BodyWeight",
+              "text": "Body weight:",
+              "answer": [
+                {
+                  "valueDecimal": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "Contraindications",
+          "text": "Contraindications",
+          "item": [
+            {
+              "linkId": "C1_ContraindicationPresent",
+              "text": "Are there any contraindications for administration?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C3_FeverChills",
+              "text": "Fever, cold chills, feeling sick",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C4_LowBloodPressure",
+              "text": "Blood pressure repeatedly lower than 100/60 mmHg",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C5_ElevatedOrIrregularHeartRate",
+              "text": "Heart rate above 100 bpm at rest or irregular heart rhythm, unless a chronically known problem.",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C6_WeightGain",
+              "text": "An increase in body weight of 3 kg / 3 weeks or 5 kg / 6 weeks, especially in combination with increased edema.",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C7_Edema",
+              "text": "Increased edema at the level of hands and/or feet.",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C8_SevereDyspnea",
+              "text": "Increased dyspnea and/or severe dyspnea (i.e. dyspnea at rest/without exertion and/or dyspnea that interferes with daily activities) (Trastuzumab, Azacitidine)",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C11_Decision",
+              "text": "Decision after consultation with hospital",
+              "answer": [
+                {
+                  "valueString": "administration"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "SymptomBurden",
+          "text": "Symptom Burden",
+          "item": [
+            {
+              "linkId": "D1_Nausea",
+              "text": "Nausea",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D2_Vomiting",
+              "text": "Vomiting",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D3_DecreasedAppetite",
+              "text": "Decreased appetite or taste change",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D4_Diarrhea",
+              "text": "Diarrhea",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D5_Constipation",
+              "text": "Constipation",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D6_Fatigue",
+              "text": "Fatigue/listlessness",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D7_Pain",
+              "text": "Pain",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D8_SkinRash",
+              "text": "Skin rash",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D9_PsychosocialBurden",
+              "text": "Psychosocial burden",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D10_Dyspnea",
+              "text": "Dyspnea",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "D11_Edema",
+              "text": "Edema",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "Assignment",
+      "text": "Assignment",
+      "item": [
+        {
+          "linkId": "MedicationPreparation",
+          "text": "Medication Preparation",
+          "item": [
+            {
+              "linkId": "E1_PreparationCorrect",
+              "text": "Could the medication be prepared according to the procedure?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "MedicationAdministration",
+          "text": "Medication Administration",
+          "item": [
+            {
+              "linkId": "E3_AdministrationCorrect",
+              "text": "Could the medication be administered exactly according to the procedure (there were no deviations)?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "Aftercare",
+          "text": "Aftercare",
+          "item": [
+            {
+              "linkId": "E5_ReactionDuringHomeObservation",
+              "text": "Was there a reaction during the home observation period?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E6a_Fever",
+              "text": "Fever",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E6b_Nausea",
+              "text": "Nausea",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E6c_TightnessSensation",
+              "text": "Tightness sensation",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E6d_Chills",
+              "text": "Chills",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E6e_InfluenzaLikeSyndrome",
+              "text": "Influenza-like syndromes",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "author": {
+    "reference": "Practitioner/example-nurse-001"
+  }
+}

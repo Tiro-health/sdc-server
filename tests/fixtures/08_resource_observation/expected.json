@@ -1,0 +1,23 @@
+[
+  {
+    "code": {
+      "coding": [
+        {
+          "code": "271649006",
+          "display": "Systolic blood pressure",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "meta": {
+      "profile": [
+        "http://example.org/SD/MyObservation"
+      ]
+    },
+    "resourceType": "Observation",
+    "status": "final",
+    "valueQuantity": {
+      "value": 120
+    }
+  }
+]

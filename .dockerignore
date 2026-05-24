@@ -1,0 +1,30 @@
+# Build artefacts (re-generated inside the image)
+target/
+**/target/
+**/__pycache__/
+**/*.pyc
+*.so
+*.dylib
+*.pyd
+.venv/
+**/.venv/
+dist/
+**/dist/
+
+# Local-only state
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+.claude/
+.DS_Store
+.pytest_cache/
+.mypy_cache/
+
+# Repo paths we don't need in the build context
+docs/
+scripts/dev_*
+
+# Per-package wheels, lockfiles unrelated to fhir-sdc build
+**/uv.lock

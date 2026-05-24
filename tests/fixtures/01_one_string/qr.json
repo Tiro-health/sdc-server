@@ -1,0 +1,7 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "status": "completed",
+  "item": [
+    { "linkId": "text", "answer": [{ "valueString": "Hello world" }] }
+  ]
+}

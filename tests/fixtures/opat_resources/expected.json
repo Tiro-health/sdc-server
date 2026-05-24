@@ -1,0 +1,578 @@
+[
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "survey",
+            "display": "Survey",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "422413002",
+          "display": "Ability to store medications (observable entity)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "No idea, this is a test but you can write a lot here."
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "710977001",
+          "display": "Safe storage of medication",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "survey",
+            "display": "Survey",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "396076000",
+          "display": "Medication prefill preparation assessment (procedure)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "Test"
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "373066001",
+          "display": "Yes (qualifier value)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "valueQuantity": {
+      "code": "g",
+      "system": "http://unitsofmeasure.org",
+      "unit": "g",
+      "value": 1
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "survey",
+            "display": "Survey",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "373149000",
+          "display": "Medication administered following procedure (situation)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "No, because this is a test so that didn't work"
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "373066001",
+          "display": "Yes (qualifier value)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "vital-signs",
+            "display": "Vital Signs",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "8310-5",
+          "display": "Body temperature",
+          "system": "http://loinc.org"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueQuantity": {
+      "code": "Cel",
+      "system": "http://unitsofmeasure.org",
+      "unit": "\u00b0C",
+      "value": 3
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "vital-signs",
+            "display": "Vital Signs",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "364075005",
+          "display": "Heart rate (observable entity)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueQuantity": {
+      "code": "{beats}/min",
+      "system": "http://unitsofmeasure.org",
+      "unit": "bpm",
+      "value": 4
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "vital-signs",
+            "display": "Vital Signs",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "8480-6",
+          "display": "Systolic blood pressure",
+          "system": "http://loinc.org"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueQuantity": {
+      "code": "mm[Hg]",
+      "system": "http://unitsofmeasure.org",
+      "unit": "mmHg",
+      "value": 5
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "vital-signs",
+            "display": "Vital Signs",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "8462-4",
+          "display": "Diastolic blood pressure",
+          "system": "http://loinc.org"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueQuantity": {
+      "code": "mm[Hg]",
+      "system": "http://unitsofmeasure.org",
+      "unit": "mmHg",
+      "value": 6
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "exam",
+            "display": "Exam",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "364554009",
+          "display": "Wound observable (observable entity)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "Test"
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "263654008",
+          "display": "Abnormal (qualifier value)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "exam",
+            "display": "Exam",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "386141001",
+          "display": "Insertion site (morphologic abnormality)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "Test"
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "263654008",
+          "display": "Abnormal (qualifier value)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "exam",
+            "display": "Exam",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "1156071007",
+          "display": "Catheter observable (observable entity)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "Test, the catheter tip looks strange"
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "17621005",
+          "display": "Normal (qualifier value)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "survey",
+            "display": "Survey",
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+          }
+        ]
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "code": "271807003",
+          "display": "Eruption of skin (disorder)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    },
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/Observation"
+      ]
+    },
+    "note": [
+      {
+        "text": "Test, patient appears dejected"
+      }
+    ],
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    },
+    "valueCodeableConcept": {
+      "coding": [
+        {
+          "code": "2667000",
+          "display": "Absent (qualifier value)",
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  },
+  {
+    "category": [
+      {
+        "coding": [
+          {
+            "code": "OTH",
+            "display": "Other",
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+          }
+        ]
+      }
+    ],
+    "conclusion": "Test, patient appeared to no longer care for themselves properly",
+    "effectiveDateTime": "2026-02-26T15:43:29.4033293+01:00",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/StructureDefinition/DiagnosticReport"
+      ]
+    },
+    "performer": [
+      {
+        "reference": "Practitioner/example-nurse-001"
+      }
+    ],
+    "resourceType": "DiagnosticReport",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+    }
+  }
+]

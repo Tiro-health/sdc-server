@@ -1,0 +1,19 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://example.org/SD/MyObservation",
+  "name": "MyObservation",
+  "kind": "resource",
+  "type": "Observation",
+  "snapshot": {
+    "element": [
+      { "id": "Observation", "path": "Observation", "min": 0, "max": "*" },
+      { "id": "Observation.status", "path": "Observation.status", "min": 1, "max": "1",
+        "type": [{ "code": "code" }],
+        "fixedCode": "final" },
+      { "id": "Observation.code",   "path": "Observation.code",   "min": 1, "max": "1",
+        "type": [{ "code": "CodeableConcept" }] },
+      { "id": "Observation.valueQuantity",       "path": "Observation.valueQuantity",       "min": 0, "max": "1", "type": [{ "code": "Quantity" }] },
+      { "id": "Observation.valueQuantity.value", "path": "Observation.valueQuantity.value", "min": 0, "max": "1", "type": [{ "code": "decimal" }] }
+    ]
+  }
+}

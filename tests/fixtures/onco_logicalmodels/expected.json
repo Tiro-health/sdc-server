@@ -1,0 +1,42 @@
+[
+  {
+    "profile": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire",
+    "value": {
+      "nursingAssessment": {
+        "contraindications": {
+          "anyContraindication": "373066001",
+          "decisionAfterConsultation": "administration",
+          "elevatedHeartRate": "373067005",
+          "feverChillsUnwell": "373067005",
+          "increasedDyspnea": "373066001",
+          "increasedEdemaHandsFeet": "373067005",
+          "lowBloodPressure": "373067005",
+          "rapidWeightIncrease": "373067005"
+        },
+        "observationParameters": {
+          "bloodPressureDiastolic": 0,
+          "bloodPressureSystolic": 0,
+          "bodyTemperature": 0,
+          "bodyWeight": 0,
+          "pulse": 0
+        },
+        "storage": {
+          "medicationStorageRemarks": "710977001"
+        },
+        "symptomBurden": {
+          "constipation": "444431007",
+          "diarrhea": "444431007",
+          "edema": "444431007",
+          "fatigue": "444431007",
+          "nausea": "444431007",
+          "pain": "444431007",
+          "psychosocialBurden": "444431007",
+          "reducedAppetiteOrTasteChanges": "444431007",
+          "shortnessOfBreath": "444431007",
+          "skinRash": "444431007",
+          "vomiting": "444431007"
+        }
+      }
+    }
+  }
+]

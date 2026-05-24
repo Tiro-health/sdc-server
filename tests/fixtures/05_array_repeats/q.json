@@ -1,0 +1,12 @@
+{
+  "resourceType": "Questionnaire",
+  "url": "http://example.org/Q/Tags",
+  "extension": [
+    { "url": "http://hl7.org/fhir/StructureDefinition/sdc-questionnaire-itemExtractionContext",
+      "valueCanonical": "http://example.org/SD/Tags" }
+  ],
+  "item": [
+    { "linkId": "label", "type": "string", "repeats": true,
+      "definition": "http://example.org/SD/Tags#Tags.label" }
+  ]
+}

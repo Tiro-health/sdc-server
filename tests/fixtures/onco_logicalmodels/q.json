@@ -1,0 +1,1370 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "TrastuzumabV1_LM",
+  "title": "Trastuzumab (Logical Model)",
+  "status": "active",
+  "item": [
+    {
+      "linkId": "NursingAssessment",
+      "text": "Nursing assessment",
+      "type": "group",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-definitionExtract",
+          "valueCanonical": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire"
+        }
+      ],
+      "item": [
+        {
+          "linkId": "MedicationStorage",
+          "text": "Medication storage",
+          "type": "group",
+          "item": [
+            {
+              "linkId": "A1_MedicationStorage",
+              "text": "Are there any comments or concerns about the (correct) home storage of the medication?",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "422413002",
+                  "display": "Ability to store medications (observable entity)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "710977001",
+                    "display": "Safe storage of medication"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "424363005",
+                    "display": "Improper storage of medication"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.storage.medicationStorageRemarks"
+            },
+            {
+              "linkId": "A2_MedicationStorageSpecify",
+              "text": "> If comments or concerns: specify",
+              "type": "string",
+              "enableWhen": [
+                {
+                  "question": "A1_MedicationStorage",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "424363005",
+                    "display": "Improper storage of medication"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.storage.storageRemarksSpecification"
+            }
+          ]
+        },
+        {
+          "linkId": "ObservationParameters",
+          "text": "Observation parameters",
+          "type": "group",
+          "item": [
+            {
+              "linkId": "B1_BodyTemperature",
+              "text": "Body temperature:",
+              "type": "decimal",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8310-5",
+                  "display": "Body temperature"
+                }
+              ],
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "code": "Cel",
+                    "system": "http://unitsofmeasure.org",
+                    "display": "\u00b0C"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.observationParameters.bodyTemperature"
+            },
+            {
+              "linkId": "B2_HeartRate",
+              "text": "Heart rate:",
+              "type": "decimal",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "364075005",
+                  "display": "Heart rate (observable entity)"
+                }
+              ],
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "code": "{beats}/min",
+                    "system": "http://unitsofmeasure.org",
+                    "display": "bpm"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.observationParameters.pulse"
+            },
+            {
+              "linkId": "B3_SystolicBloodPressure",
+              "text": "Systolic blood pressure:",
+              "type": "decimal",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "Systolic blood pressure"
+                }
+              ],
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "code": "mm[Hg]",
+                    "system": "http://unitsofmeasure.org",
+                    "display": "mmHg"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.observationParameters.bloodPressureSystolic"
+            },
+            {
+              "linkId": "B4_DiastolicBloodPressure",
+              "text": "Diastolic blood pressure:",
+              "type": "decimal",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "Diastolic blood pressure"
+                }
+              ],
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "code": "mm[Hg]",
+                    "system": "http://unitsofmeasure.org",
+                    "display": "mmHg"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.observationParameters.bloodPressureDiastolic"
+            },
+            {
+              "linkId": "B5_BodyWeight",
+              "text": "Body weight:",
+              "type": "decimal",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "29463-7",
+                  "display": "Body weight"
+                }
+              ],
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "code": "kg",
+                    "system": "http://unitsofmeasure.org",
+                    "display": "kg"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.observationParameters.bodyWeight"
+            }
+          ]
+        },
+        {
+          "linkId": "Contraindications",
+          "text": "Contraindications",
+          "type": "group",
+          "item": [
+            {
+              "linkId": "C1_ContraindicationPresent",
+              "text": "Are there any contraindications for administration?",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "395008009",
+                  "display": "Medication stopped - contra-indication (situation)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.anyContraindication"
+            },
+            {
+              "linkId": "C2_ContraindicationSpecify",
+              "text": "> If 'yes': specify",
+              "type": "display",
+              "enableWhen": [
+                {
+                  "question": "C1_ContraindicationPresent",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C3_FeverChills",
+              "text": "Fever, chills, feeling ill",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "39104002",
+                  "display": "Illness (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.feverChillsUnwell"
+            },
+            {
+              "linkId": "C4_LowBloodPressure",
+              "text": "Blood pressure repeatedly below 100/60 mmHg",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "12763006",
+                  "display": "Blood pressure below reference range (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.lowBloodPressure"
+            },
+            {
+              "linkId": "C5_ElevatedOrIrregularHeartRate",
+              "text": "Heart rate above 100 bpm at rest or irregular heart rhythm, unless a chronically known problem.",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "361137007",
+                  "display": "Irregular heart beat (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.elevatedHeartRate"
+            },
+            {
+              "linkId": "C6_WeightGain",
+              "text": "A weight gain of 3 kg / 3 weeks or 5 kg / 6 weeks, especially in combination with increased edema.",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "262286000",
+                  "display": "Weight increased (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.rapidWeightIncrease"
+            },
+            {
+              "linkId": "C7_Edema",
+              "text": "Increased edema of the hands and/or feet.",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "267038008",
+                  "display": "Edema (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.increasedEdemaHandsFeet"
+            },
+            {
+              "linkId": "C8_SevereDyspnea",
+              "text": "Increased breathlessness and/or severe breathlessness (i.e. breathlessness at rest/without exertion and/or breathlessness that interferes with daily activities) (Trastuzumab, Azacitidine)",
+              "type": "choice",
+              "required": true,
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "297216006",
+                  "display": "Increasing breathlessness (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.increasedDyspnea"
+            },
+            {
+              "linkId": "C9_Other",
+              "text": "Other: (if applicable)",
+              "type": "string",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "438833006",
+                  "display": "Administration of drug or medicament contraindicated (situation)"
+                }
+              ]
+            },
+            {
+              "linkId": "C10_ContactCareTeam",
+              "text": "> If contraindication(s): please contact the hospital care team",
+              "type": "display",
+              "enableWhen": [
+                {
+                  "question": "C1_ContraindicationPresent",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C11_Decision",
+              "text": "Decision after consultation with hospital",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "182836005",
+                  "display": "Review of medication (procedure)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueString": "administration"
+                },
+                {
+                  "valueString": "no administration"
+                },
+                {
+                  "valueString": "other"
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.decisionAfterConsultation"
+            },
+            {
+              "linkId": "C12_DecisionSpecify",
+              "text": "> If 'other': specify",
+              "type": "string",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "1156698007",
+                  "display": "Review of current supply of medication (procedure)"
+                }
+              ],
+              "enableWhen": [
+                {
+                  "question": "C11_Decision",
+                  "operator": "=",
+                  "answerString": "other"
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.contraindications.decisionOtherSpecification"
+            }
+          ]
+        },
+        {
+          "linkId": "SymptomBurden",
+          "text": "Symptom burden",
+          "type": "group",
+          "item": [
+            {
+              "linkId": "D1_Nausea",
+              "text": "Nausea",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "422587007",
+                  "display": "Nausea (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.nausea"
+            },
+            {
+              "linkId": "D2_Vomiting",
+              "text": "Vomiting",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "249497008",
+                  "display": "Vomiting symptom (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.vomiting"
+            },
+            {
+              "linkId": "D3_DecreasedAppetite",
+              "text": "Decreased appetite or taste change",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "64379006",
+                  "display": "Decrease in appetite (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.reducedAppetiteOrTasteChanges"
+            },
+            {
+              "linkId": "D4_Diarrhea",
+              "text": "Diarrhea",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "62315008",
+                  "display": "Diarrhea (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.diarrhea"
+            },
+            {
+              "linkId": "D5_Constipation",
+              "text": "Constipation",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "14760008",
+                  "display": "Constipation (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.constipation"
+            },
+            {
+              "linkId": "D6_Fatigue",
+              "text": "Fatigue/lethargy",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "224960004",
+                  "display": "Tired (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.fatigue"
+            },
+            {
+              "linkId": "D7_Pain",
+              "text": "Pain",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "112104007",
+                  "display": "Localized pain (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.pain"
+            },
+            {
+              "linkId": "D8_SkinRash",
+              "text": "Skin rash",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "271807003",
+                  "display": "Eruption of skin (disorder)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.skinRash"
+            },
+            {
+              "linkId": "D9_PsychosocialBurden",
+              "text": "Psychosocial burden",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "384821006",
+                  "display": "Mental state, behavior and/or psychosocial function finding (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.psychosocialBurden"
+            },
+            {
+              "linkId": "D10_Dyspnea",
+              "text": "Dyspnea",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "267036007",
+                  "display": "Dyspnea (finding)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.shortnessOfBreath"
+            },
+            {
+              "linkId": "D11_Edema",
+              "text": "Edema",
+              "type": "choice",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "79654002",
+                  "display": "Edema (morphologic abnormality)"
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444431007",
+                    "display": "Grade 0 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444456001",
+                    "display": "Grade 1 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444457005",
+                    "display": "Grade 2 on a scale of 0 to 3 (qualifier value)"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444447009",
+                    "display": "Grade 3 on a scale of 0 to 3 (qualifier value)"
+                  }
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.symptomBurden.edema"
+            },
+            {
+              "linkId": "D12_OtherObservations",
+              "text": "Other side effects or relevant clinical and psychosocial observations\n(in case of clinical concerns, please contact the hospital for discussion)",
+              "type": "string",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "365275006",
+                  "display": "General well-being finding (finding)"
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.otherRelevantObservations.otherObservations"
+            }
+          ]
+        },
+        {
+          "linkId": "Assignment",
+          "text": "Assignment",
+          "type": "group",
+          "item": [
+            {
+              "linkId": "MedicationPreparation",
+              "text": "Medication preparation",
+              "type": "group",
+              "item": [
+                {
+                  "linkId": "E1_PreparationCorrect",
+                  "text": "Could the medication be prepared according to the procedure?",
+                  "type": "choice",
+                  "required": true,
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "385796006",
+                      "display": "Medication prefill preparation (procedure)"
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.task.medicationPreparedPerProcedure"
+                },
+                {
+                  "linkId": "E2_ContactCareTeam",
+                  "text": "> If 'no': please contact the hospital care team",
+                  "type": "display",
+                  "enableWhen": [
+                    {
+                      "question": "E1_PreparationCorrect",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "linkId": "MedicationAdministration",
+              "text": "Medication administration",
+              "type": "group",
+              "item": [
+                {
+                  "linkId": "E3_AdministrationCorrect",
+                  "text": "Could the medication be administered exactly according to the procedure (there were no deviations)?",
+                  "type": "choice",
+                  "required": true,
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "373149000",
+                      "display": "Medication administered following procedure (situation)"
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.task.medicationAdministeredPerProcedure"
+                },
+                {
+                  "linkId": "E4_SpecifyNo",
+                  "text": "> If 'no': specify",
+                  "type": "string",
+                  "enableWhen": [
+                    {
+                      "question": "E3_AdministrationCorrect",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "linkId": "Aftercare",
+              "text": "Aftercare",
+              "type": "group",
+              "item": [
+                {
+                  "linkId": "E5_ReactionDuringHomeObservation",
+                  "text": "Was there a reaction during the home observation period?",
+                  "type": "choice",
+                  "required": true,
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "281647001",
+                      "display": "Adverse reaction (disorder)"
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.aftercare.reactionDuringObservation"
+                },
+                {
+                  "linkId": "E6a_Fever",
+                  "text": "Fever",
+                  "type": "choice",
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "386661006",
+                      "display": "Fever (finding)"
+                    }
+                  ],
+                  "enableWhen": [
+                    {
+                      "question": "E5_ReactionDuringHomeObservation",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.aftercare.fever"
+                },
+                {
+                  "linkId": "E6b_Nausea",
+                  "text": "Nausea",
+                  "type": "choice",
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "422587007",
+                      "display": "Nausea (finding)"
+                    }
+                  ],
+                  "enableWhen": [
+                    {
+                      "question": "E5_ReactionDuringHomeObservation",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.aftercare.nausea"
+                },
+                {
+                  "linkId": "E6c_TightnessSensation",
+                  "text": "Tightness sensation",
+                  "type": "choice",
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "255365009",
+                      "display": "Tightness sensation quality (qualifier value)"
+                    }
+                  ],
+                  "enableWhen": [
+                    {
+                      "question": "E5_ReactionDuringHomeObservation",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.aftercare.shortnessOfBreath"
+                },
+                {
+                  "linkId": "E6d_Chills",
+                  "text": "Chills",
+                  "type": "choice",
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "43724002",
+                      "display": "Chill (finding)"
+                    }
+                  ],
+                  "enableWhen": [
+                    {
+                      "question": "E5_ReactionDuringHomeObservation",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.aftercare.chills"
+                },
+                {
+                  "linkId": "E6e_InfluenzaLikeSyndrome",
+                  "text": "Influenza-like syndromes",
+                  "type": "choice",
+                  "code": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "95891005",
+                      "display": "Influenza-like illness (finding)"
+                    }
+                  ],
+                  "enableWhen": [
+                    {
+                      "question": "E5_ReactionDuringHomeObservation",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373066001",
+                        "display": "Yes (qualifier value)"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "373067005",
+                        "display": "No (qualifier value)"
+                      }
+                    }
+                  ],
+                  "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.aftercare.fluLikeSymptoms"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "QualityMonitoring",
+          "text": "(Quality) monitoring",
+          "type": "group",
+          "item": [
+            {
+              "linkId": "F1_CommentsRegistration",
+              "text": "Please note any comments or concerns regarding the registration of this patient, the sharing of data from the hospital, the communication by and contact with the hospital, the availability of materials, or other aspects of the transmural collaboration around home hospitalization oncology. Thank you.",
+              "type": "string",
+              "code": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "276238005",
+                  "display": "Comments on own writing (finding)"
+                }
+              ],
+              "definition": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/onco-trastuzumab-questionnaire#onco-trastuzumab-questionnaire.nursingAssessment.qualityFollowUp.remarks"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

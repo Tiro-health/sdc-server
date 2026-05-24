@@ -1,0 +1,697 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "Questionnaire/OPATContinuInfuusV1",
+  "status": "completed",
+  "subject": {
+    "reference": "Patient/2ddad017-8236-4a64-b123-1530261985bd"
+  },
+  "authored": "2026-02-26T15:43:29.4033293+01:00",
+  "item": [
+    {
+      "linkId": "NursingAssessment",
+      "text": "Nursing Assessment",
+      "item": [
+        {
+          "linkId": "MedicationStorage",
+          "text": "Medication Storage",
+          "item": [
+            {
+              "linkId": "A1_MedicationStorage",
+              "text": "Are there any comments or concerns regarding the (correct) home storage of the medication?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "710977001",
+                    "display": "Safe storage of medication"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "A2_MedicationStorageSpecify",
+              "text": "> If there are comments or concerns: specify",
+              "answer": [
+                {
+                  "valueString": "No idea, this is a test but you can write a lot here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "MedicationPreparation",
+          "text": "Medication Preparation",
+          "item": [
+            {
+              "linkId": "B1_MedicationFullyDissolved",
+              "text": "The medication was fully dissolved into a clear solution without visible particles",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "B3_WeightFullInfusor",
+              "text": "Weight of full Infusor just before new administration",
+              "answer": [
+                {
+                  "valueDecimal": 1
+                }
+              ]
+            },
+            {
+              "linkId": "B4_WeightEmptyInfusor",
+              "text": "Weight when disconnecting empty infusor",
+              "answer": [
+                {
+                  "valueDecimal": 2
+                }
+              ]
+            },
+            {
+              "linkId": "B5_AdditionalObservation",
+              "text": "Additional observation: (if applicable)",
+              "answer": [
+                {
+                  "valueString": "Test"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "MedicationAdministration",
+          "text": "Medication Administration",
+          "item": [
+            {
+              "linkId": "C1_AdministrationCorrect",
+              "text": "Could the medication be administered exactly according to the procedure (there were no deviations)?",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "C2_SpecifyNo",
+              "text": "> If no: specify",
+              "answer": [
+                {
+                  "valueString": "No, because this is a test so that didn't work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "VitalParameters",
+          "text": "Vital Parameters",
+          "item": [
+            {
+              "linkId": "D1_BodyTemperature",
+              "text": "Body temperature:",
+              "answer": [
+                {
+                  "valueDecimal": 3
+                }
+              ]
+            },
+            {
+              "linkId": "D2_HeartRate",
+              "text": "Heart rate:",
+              "answer": [
+                {
+                  "valueDecimal": 4
+                }
+              ]
+            },
+            {
+              "linkId": "D3_SystolicBloodPressure",
+              "text": "Blood pressure - systolic",
+              "answer": [
+                {
+                  "valueDecimal": 5
+                }
+              ]
+            },
+            {
+              "linkId": "D4_DiastolicBloodPressure",
+              "text": "Blood pressure - diastolic",
+              "answer": [
+                {
+                  "valueDecimal": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "DressingObservation",
+          "text": "Dressing observation at insertion site",
+          "item": [
+            {
+              "linkId": "E1_DressingObservation",
+              "text": "Dressing observation at insertion site",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "263654008",
+                    "display": "Abnormal (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E3_Bloody",
+              "text": "Bloody",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E4_Purulent",
+              "text": "Purulent",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E5_Loose",
+              "text": "Loose",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E6_Serous",
+              "text": "Serous",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E7_Moist",
+              "text": "Moist",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "E8_Other",
+              "text": "Other: (if applicable)",
+              "answer": [
+                {
+                  "valueString": "Test"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "InsertionSiteObservation",
+          "text": "Insertion site observation",
+          "item": [
+            {
+              "linkId": "F1_InsertionSiteObservation",
+              "text": "Insertion site observation",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "263654008",
+                    "display": "Abnormal (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F3_Blistering",
+              "text": "Blistering",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F4_Redness",
+              "text": "Redness",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F5_Hematoma",
+              "text": "Hematoma",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F6_Pus",
+              "text": "Pus",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F7_Crusting",
+              "text": "Crusting",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F8_Swelling",
+              "text": "Swelling",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "No (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F9_Extravasation",
+              "text": "Extravasation/infiltration",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "F10_Other",
+              "text": "Other: (if applicable)",
+              "answer": [
+                {
+                  "valueString": "Test"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "CatheterObservation",
+          "text": "Catheter observation",
+          "item": [
+            {
+              "linkId": "G1_CatheterObservation",
+              "text": "Catheter observation",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "17621005",
+                    "display": "Normal (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "G_Lumen",
+              "text": "Per-lumen observation",
+              "item": [
+                {
+                  "linkId": "G_LumenColor",
+                  "text": "Lumen color",
+                  "answer": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "371253002",
+                        "display": "Gray color (qualifier value)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "G3_BloodAspiration",
+                  "text": "Blood aspiration",
+                  "answer": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "36203004",
+                        "display": "Easy"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "G4_Infusion",
+                  "text": "Infusion",
+                  "answer": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "36203004",
+                        "display": "Easy"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "linkId": "G5_DamagedCatheter",
+              "text": "Damaged catheter",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "Yes (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "G6_Other",
+              "text": "Other: (if applicable)",
+              "answer": [
+                {
+                  "valueString": "Test, the catheter tip looks strange"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "SideEffects",
+          "text": "Side Effects",
+          "item": [
+            {
+              "linkId": "H1_SkinRash",
+              "text": "Skin rash",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "2667000",
+                    "display": "Absent (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H2_Itching",
+              "text": "Itching",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255604002",
+                    "display": "Mild (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H3_BlistersOrSkinPeeling",
+              "text": "Blisters/skin peeling",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6736007",
+                    "display": "Moderate (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H4_Nausea",
+              "text": "Nausea",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "24484000",
+                    "display": "Severe (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H5_Vomiting",
+              "text": "Vomiting",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255604002",
+                    "display": "Mild (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H6_Diarrhea",
+              "text": "Diarrhea",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6736007",
+                    "display": "Moderate (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H7_Constipation",
+              "text": "Constipation",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255604002",
+                    "display": "Mild (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H8_DecreasedAppetite",
+              "text": "Decreased appetite",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "2667000",
+                    "display": "Absent (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H9_PainDuringAdministration",
+              "text": "Pain during administration",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6736007",
+                    "display": "Moderate (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H10_GeneralPain",
+              "text": "Pain (general)",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "2667000",
+                    "display": "Absent (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H11_Fatigue",
+              "text": "Fatigue",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6736007",
+                    "display": "Moderate (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H12_Chills",
+              "text": "Chills",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6736007",
+                    "display": "Moderate (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H13_Candidiasis",
+              "text": "Candidiasis (fungal infection)",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255604002",
+                    "display": "Mild (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H14_JointPain",
+              "text": "Joint pain",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "24484000",
+                    "display": "Severe (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H15_RespiratoryProblems",
+              "text": "Respiratory problems",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "2667000",
+                    "display": "Absent (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H16_FacialTongueSwell",
+              "text": "Facial/tongue swelling",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "2667000",
+                    "display": "Absent (qualifier value)"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "H17_OtherObservations",
+              "text": "Are there other symptoms or other relevant clinical and/or psychosocial observations?\n(please contact the care team at the hospital if there are clinical concerns)",
+              "answer": [
+                {
+                  "valueString": "Test, patient appears dejected"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "QualityMonitoring",
+      "text": "Quality Monitoring",
+      "item": [
+        {
+          "linkId": "I1_CommentsRegistration",
+          "text": "Are there any comments or concerns regarding the registration of this patient, the data sharing from the hospital, the communication and contact with the hospital, the availability of medication and materials, or other aspects of the transmurale collaboration regarding home hospitalization OPAT, we would appreciate if you share them with us. Thank you in advance.",
+          "answer": [
+            {
+              "valueString": "Test, patient appeared to no longer care for themselves properly"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

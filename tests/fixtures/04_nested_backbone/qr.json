@@ -1,0 +1,15 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "status": "completed",
+  "item": [
+    { "linkId": "name", "answer": [{ "valueString": "Alice" }] },
+    {
+      "linkId": "address",
+      "item": [
+        { "linkId": "street", "answer": [{ "valueString": "Rue de la Loi 16" }] },
+        { "linkId": "city",   "answer": [{ "valueString": "Brussels" }] },
+        { "linkId": "zip",    "answer": [{ "valueString": "1000" }] }
+      ]
+    }
+  ]
+}

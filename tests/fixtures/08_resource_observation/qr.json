@@ -1,0 +1,16 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "code",
+      "answer": [
+        { "valueCoding": { "system": "http://snomed.info/sct", "code": "271649006", "display": "Systolic blood pressure" } }
+      ]
+    },
+    {
+      "linkId": "value",
+      "answer": [{ "valueDecimal": 120 }]
+    }
+  ]
+}

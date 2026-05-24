@@ -1,0 +1,13 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://example.org/SD/Tags",
+  "name": "Tags",
+  "kind": "logical",
+  "type": "Tags",
+  "snapshot": {
+    "element": [
+      { "id": "Tags", "path": "Tags", "min": 0, "max": "*" },
+      { "id": "Tags.label", "path": "Tags.label", "min": 0, "max": "*", "type": [{ "code": "string" }] }
+    ]
+  }
+}

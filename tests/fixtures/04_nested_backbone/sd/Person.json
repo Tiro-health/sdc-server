@@ -1,0 +1,17 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://example.org/SD/Person",
+  "name": "Person",
+  "kind": "logical",
+  "type": "Person",
+  "snapshot": {
+    "element": [
+      { "id": "Person", "path": "Person", "min": 0, "max": "*" },
+      { "id": "Person.name",            "path": "Person.name",            "min": 0, "max": "1", "type": [{ "code": "string" }] },
+      { "id": "Person.address",         "path": "Person.address",         "min": 0, "max": "1", "type": [{ "code": "BackboneElement" }] },
+      { "id": "Person.address.street",  "path": "Person.address.street",  "min": 0, "max": "1", "type": [{ "code": "string" }] },
+      { "id": "Person.address.city",    "path": "Person.address.city",    "min": 0, "max": "1", "type": [{ "code": "string" }] },
+      { "id": "Person.address.zip",     "path": "Person.address.zip",     "min": 0, "max": "1", "type": [{ "code": "string" }] }
+    ]
+  }
+}

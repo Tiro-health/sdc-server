@@ -1,0 +1,19 @@
+{
+  "resourceType": "Questionnaire",
+  "url": "http://example.org/Q/Person",
+  "extension": [
+    { "url": "http://hl7.org/fhir/StructureDefinition/sdc-questionnaire-itemExtractionContext",
+      "valueCanonical": "http://example.org/SD/Person" }
+  ],
+  "item": [
+    { "linkId": "name",   "type": "string", "definition": "http://example.org/SD/Person#Person.name" },
+    {
+      "linkId": "address", "type": "group",
+      "item": [
+        { "linkId": "street", "type": "string", "definition": "http://example.org/SD/Person#Person.address.street" },
+        { "linkId": "city",   "type": "string", "definition": "http://example.org/SD/Person#Person.address.city" },
+        { "linkId": "zip",    "type": "string", "definition": "http://example.org/SD/Person#Person.address.zip" }
+      ]
+    }
+  ]
+}

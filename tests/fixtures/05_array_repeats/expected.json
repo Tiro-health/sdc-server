@@ -1,0 +1,12 @@
+[
+  {
+    "profile": "http://example.org/SD/Tags",
+    "value": {
+      "label": [
+        "urgent",
+        "follow-up",
+        "oncology"
+      ]
+    }
+  }
+]

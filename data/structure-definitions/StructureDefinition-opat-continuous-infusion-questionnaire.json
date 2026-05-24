@@ -1,0 +1,1699 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "opat-continuous-infusion-questionnaire",
+  "url": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/opat-continuous-infusion-questionnaire",
+  "name": "OPATContinuousInfusionQuestionnaire",
+  "title": "OPAT Continuous Infusion Questionnaire Logical Model",
+  "status": "draft",
+  "description": "Logical model representing the nursing assessment questionnaire for OPAT home hospitalization patients receiving continuous infusion. This questionnaire is filled in by the home nurse during each visit and exchanged as a FHIR QuestionnaireResponse with the hospital.",
+  "fhirVersion": "4.0.1",
+  "kind": "logical",
+  "abstract": false,
+  "type": "http://hl7belgium.org/fhir/patient-monitoring/StructureDefinition/opat-continuous-infusion-questionnaire",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Base",
+  "derivation": "specialization",
+  "differential": {
+    "element": [
+      {
+        "id": "opat-continuous-infusion-questionnaire",
+        "path": "opat-continuous-infusion-questionnaire",
+        "short": "OPAT Continuous Infusion Questionnaire Logical Model",
+        "definition": "Logical model representing the nursing assessment questionnaire for OPAT home hospitalization patients receiving continuous infusion. This questionnaire is filled in by the home nurse during each visit and exchanged as a FHIR QuestionnaireResponse with the hospital."
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment",
+        "short": "Nursing Assessment",
+        "definition": "Nursing Assessment",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.storage",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.storage",
+        "short": "Storage",
+        "definition": "Storage",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.medicationStorageRemarks",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.medicationStorageRemarks",
+        "short": "Are there any remarks or concerns regarding the (proper) home storage of medication? (SNOMED 422413002) | Answers: 710977001 Medication stored correctly | 424363005 Concern about proper home storage",
+        "definition": "Are there any remarks or concerns regarding the (proper) home storage of medication? (SNOMED 422413002) | Answers: 710977001 Medication stored correctly | 424363005 Concern about proper home storage",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.storageRemarksSpecification",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.storageRemarksSpecification",
+        "short": "Specify remarks or concerns (conditional: if medicationStorageRemarks = concern)",
+        "definition": "Specify remarks or concerns (conditional: if medicationStorageRemarks = concern)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation",
+        "short": "Preparation of Medication Administration",
+        "definition": "Preparation of Medication Administration",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.medicationDissolvedClear",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.medicationDissolvedClear",
+        "short": "The medication was completely dissolved into a clear solution without visible particles (SNOMED 396076000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "The medication was completely dissolved into a clear solution without visible particles (SNOMED 396076000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightEmptyInfusor",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightEmptyInfusor",
+        "short": "Weight when disconnecting empty infusor (g) (SNOMED 1381260006)",
+        "definition": "Weight when disconnecting empty infusor (g) (SNOMED 1381260006)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightFullInfusorBeforeAdministration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightFullInfusorBeforeAdministration",
+        "short": "Weight of full infusor just before new administration (g) (SNOMED 1381257004)",
+        "definition": "Weight of full infusor just before new administration (g) (SNOMED 1381257004)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.additionalObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.additionalObservation",
+        "short": "Additional observation during preparation, if applicable (SNOMED 396078004)",
+        "definition": "Additional observation during preparation, if applicable (SNOMED 396078004)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration",
+        "short": "Medication Administration",
+        "definition": "Medication Administration",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.administeredPerProcedure",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.administeredPerProcedure",
+        "short": "Was the medication administered exactly according to the procedure (no deviations)? (SNOMED 373149000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Was the medication administered exactly according to the procedure (no deviations)? (SNOMED 373149000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.deviationSpecification",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.deviationSpecification",
+        "short": "Specify deviation (conditional: if administeredPerProcedure = No)",
+        "definition": "Specify deviation (conditional: if administeredPerProcedure = No)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters",
+        "short": "Vital Parameters",
+        "definition": "Vital Parameters",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bodyTemperature",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bodyTemperature",
+        "short": "Body temperature (\u00b0C) (LOINC 8310-5)",
+        "definition": "Body temperature (\u00b0C) (LOINC 8310-5)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.pulse",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.pulse",
+        "short": "Pulse (beats/min) (SNOMED 364075005)",
+        "definition": "Pulse (beats/min) (SNOMED 364075005)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureSystolic",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureSystolic",
+        "short": "Blood pressure - systolic (mmHg) (LOINC 8480-6)",
+        "definition": "Blood pressure - systolic (mmHg) (LOINC 8480-6)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureDiastolic",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureDiastolic",
+        "short": "Blood pressure - diastolic (mmHg) (LOINC 8462-4)",
+        "definition": "Blood pressure - diastolic (mmHg) (LOINC 8462-4)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation",
+        "short": "Dressing Observation at Insertion Site",
+        "definition": "Dressing Observation at Insertion Site",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.dressingObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.dressingObservation",
+        "short": "Dressing observation at insertion site (SNOMED 364554009) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "definition": "Dressing observation at insertion site (SNOMED 364554009) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.bloody",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.bloody",
+        "short": "Bloody (SNOMED 297968009) | Answers: 373066001 Yes | 373067005 No (conditional: if dressingObservation = Abnormal)",
+        "definition": "Bloody (SNOMED 297968009) | Answers: 373066001 Yes | 373067005 No (conditional: if dressingObservation = Abnormal)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.purulent",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.purulent",
+        "short": "Purulent (SNOMED 225550006) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Purulent (SNOMED 225550006) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.loose",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.loose",
+        "short": "Loose (SNOMED 78799005) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Loose (SNOMED 78799005) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.serous",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.serous",
+        "short": "Serous (SNOMED 447112000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Serous (SNOMED 447112000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.moist",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.moist",
+        "short": "Moist (SNOMED 17461003) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Moist (SNOMED 17461003) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.other",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.other",
+        "short": "Other dressing observation problem, if applicable (SNOMED 1481000124102)",
+        "definition": "Other dressing observation problem, if applicable (SNOMED 1481000124102)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation",
+        "short": "Insertion Site Observation",
+        "definition": "Insertion Site Observation",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.insertionSiteObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.insertionSiteObservation",
+        "short": "Insertion site observation (SNOMED 386141001) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "definition": "Insertion site observation (SNOMED 386141001) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.blistering",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.blistering",
+        "short": "Blistering (SNOMED 339008) | Answers: 373066001 Yes | 373067005 No (conditional: if insertionSiteObservation = Abnormal)",
+        "definition": "Blistering (SNOMED 339008) | Answers: 373066001 Yes | 373067005 No (conditional: if insertionSiteObservation = Abnormal)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.redness",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.redness",
+        "short": "Redness (SNOMED 371240000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Redness (SNOMED 371240000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.hematoma",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.hematoma",
+        "short": "Hematoma (SNOMED 35566002) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Hematoma (SNOMED 35566002) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.pus",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.pus",
+        "short": "Pus (SNOMED 367646009) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Pus (SNOMED 367646009) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.crusting",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.crusting",
+        "short": "Crusting / crust formation (SNOMED 69640009) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Crusting / crust formation (SNOMED 69640009) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.swelling",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.swelling",
+        "short": "Swelling (SNOMED 65124004) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Swelling (SNOMED 65124004) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.extravasation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.extravasation",
+        "short": "Extravasation/infiltration (SNOMED 76676007) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Extravasation/infiltration (SNOMED 76676007) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.other",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.other",
+        "short": "Other insertion site observation, if applicable (SNOMED 364554009)",
+        "definition": "Other insertion site observation, if applicable (SNOMED 364554009)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation",
+        "short": "Catheter Observation",
+        "definition": "Catheter Observation",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterType",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterType",
+        "short": "Type of catheter (SNOMED 246138005) | Answers: 52124006 Port catheter | 1396546006 1-lumen tunneled | 1396570005 2-lumen tunneled | 1396538005 3-lumen tunneled | 1396531004 Single lumen midline | 1396527005 Double lumen midline | 1396526001 Single lumen PICC | 1396489007 Double lumen PICC | 423954007 Peripheral catheter",
+        "definition": "Type of catheter (SNOMED 246138005) | Answers: 52124006 Port catheter | 1396546006 1-lumen tunneled | 1396570005 2-lumen tunneled | 1396538005 3-lumen tunneled | 1396531004 Single lumen midline | 1396527005 Double lumen midline | 1396526001 Single lumen PICC | 1396489007 Double lumen PICC | 423954007 Peripheral catheter",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterObservation",
+        "short": "Catheter observation (SNOMED 1156071007) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "definition": "Catheter observation (SNOMED 1156071007) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen",
+        "short": "Per-lumen observation (specify per lumen; conditional: if catheterObservation = Abnormal)",
+        "definition": "Per-lumen observation (specify per lumen; conditional: if catheterObservation = Abnormal)",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.colorLumen",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.colorLumen",
+        "short": "Color of lumen hub (SNOMED 1396483008) | Answers: 371253002 Gray | 371251000 White | 371240000 Red | 371250004 Purple",
+        "definition": "Color of lumen hub (SNOMED 1396483008) | Answers: 371253002 Gray | 371251000 White | 371240000 Red | 371250004 Purple",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.bloodAspiration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.bloodAspiration",
+        "short": "Blood aspiration (SNOMED 25797006) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "definition": "Blood aspiration (SNOMED 25797006) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.infusion",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.infusion",
+        "short": "Infusion (SNOMED 36576007) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "definition": "Infusion (SNOMED 36576007) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.damagedCatheter",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.damagedCatheter",
+        "short": "Damaged catheter (SNOMED 1156074004) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Damaged catheter (SNOMED 1156074004) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.other",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.other",
+        "short": "Other catheter observation, if applicable (SNOMED 406148008)",
+        "definition": "Other catheter observation, if applicable (SNOMED 406148008)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects",
+        "short": "Side Effects",
+        "definition": "Side Effects",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.skinRash",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.skinRash",
+        "short": "Skin rash (SNOMED 271807003) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Skin rash (SNOMED 271807003) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.itching",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.itching",
+        "short": "Itching (SNOMED 418290006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Itching (SNOMED 418290006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.blistersSkinPeeling",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.blistersSkinPeeling",
+        "short": "Blisters/skin peeling (SNOMED 271767006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Blisters/skin peeling (SNOMED 271767006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.nausea",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.nausea",
+        "short": "Nausea (SNOMED 422587007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Nausea (SNOMED 422587007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.vomiting",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.vomiting",
+        "short": "Vomiting (SNOMED 249497008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Vomiting (SNOMED 249497008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.diarrhea",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.diarrhea",
+        "short": "Diarrhea (SNOMED 62315008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Diarrhea (SNOMED 62315008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.constipation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.constipation",
+        "short": "Constipation (SNOMED 14760008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Constipation (SNOMED 14760008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.decreasedAppetite",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.decreasedAppetite",
+        "short": "Decreased appetite / taste change (SNOMED 64379006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Decreased appetite / taste change (SNOMED 64379006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painDuringAdministration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painDuringAdministration",
+        "short": "Pain during administration (SNOMED 698749006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Pain during administration (SNOMED 698749006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painGeneral",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painGeneral",
+        "short": "Pain general (SNOMED 112104007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Pain general (SNOMED 112104007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.fatigue",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.fatigue",
+        "short": "Fatigue (SNOMED 224960004) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Fatigue (SNOMED 224960004) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.chills",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.chills",
+        "short": "Chills (SNOMED 43724002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Chills (SNOMED 43724002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.candidiasis",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.candidiasis",
+        "short": "Candidiasis / fungal infection (SNOMED 78048006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Candidiasis / fungal infection (SNOMED 78048006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.jointPain",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.jointPain",
+        "short": "Joint pain (SNOMED 57676002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Joint pain (SNOMED 57676002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.breathingProblems",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.breathingProblems",
+        "short": "Breathing problems / shortness of breath (SNOMED 267036007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Breathing problems / shortness of breath (SNOMED 267036007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.swellingFaceTongue",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.swellingFaceTongue",
+        "short": "Swelling of face/tongue (SNOMED 278528006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Swelling of face/tongue (SNOMED 278528006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.otherSymptoms",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.otherSymptoms",
+        "short": "Other symptoms or relevant clinical/psychosocial observations (SNOMED 365275006)",
+        "definition": "Other symptoms or relevant clinical/psychosocial observations (SNOMED 365275006)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp",
+        "short": "Quality Follow-Up",
+        "definition": "Quality Follow-Up",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp.remarks",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp.remarks",
+        "short": "Remarks or concerns about patient registration, data sharing, hospital communication, material availability, or other transmural collaboration aspects (SNOMED 276238005)",
+        "definition": "Remarks or concerns about patient registration, data sharing, hospital communication, material availability, or other transmural collaboration aspects (SNOMED 276238005)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      }
+    ]
+  },
+  "snapshot": {
+    "element": [
+      {
+        "id": "opat-continuous-infusion-questionnaire",
+        "path": "opat-continuous-infusion-questionnaire",
+        "short": "OPAT Continuous Infusion Questionnaire Logical Model",
+        "definition": "Logical model representing the nursing assessment questionnaire for OPAT home hospitalization patients receiving continuous infusion. This questionnaire is filled in by the home nurse during each visit and exchanged as a FHIR QuestionnaireResponse with the hospital."
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment",
+        "short": "Nursing Assessment",
+        "definition": "Nursing Assessment",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.storage",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.storage",
+        "short": "Storage",
+        "definition": "Storage",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.medicationStorageRemarks",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.medicationStorageRemarks",
+        "short": "Are there any remarks or concerns regarding the (proper) home storage of medication? (SNOMED 422413002) | Answers: 710977001 Medication stored correctly | 424363005 Concern about proper home storage",
+        "definition": "Are there any remarks or concerns regarding the (proper) home storage of medication? (SNOMED 422413002) | Answers: 710977001 Medication stored correctly | 424363005 Concern about proper home storage",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.storageRemarksSpecification",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.storage.storageRemarksSpecification",
+        "short": "Specify remarks or concerns (conditional: if medicationStorageRemarks = concern)",
+        "definition": "Specify remarks or concerns (conditional: if medicationStorageRemarks = concern)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation",
+        "short": "Preparation of Medication Administration",
+        "definition": "Preparation of Medication Administration",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.medicationDissolvedClear",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.medicationDissolvedClear",
+        "short": "The medication was completely dissolved into a clear solution without visible particles (SNOMED 396076000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "The medication was completely dissolved into a clear solution without visible particles (SNOMED 396076000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightEmptyInfusor",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightEmptyInfusor",
+        "short": "Weight when disconnecting empty infusor (g) (SNOMED 1381260006)",
+        "definition": "Weight when disconnecting empty infusor (g) (SNOMED 1381260006)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightFullInfusorBeforeAdministration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.weightFullInfusorBeforeAdministration",
+        "short": "Weight of full infusor just before new administration (g) (SNOMED 1381257004)",
+        "definition": "Weight of full infusor just before new administration (g) (SNOMED 1381257004)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.additionalObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.preparation.additionalObservation",
+        "short": "Additional observation during preparation, if applicable (SNOMED 396078004)",
+        "definition": "Additional observation during preparation, if applicable (SNOMED 396078004)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration",
+        "short": "Medication Administration",
+        "definition": "Medication Administration",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.administeredPerProcedure",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.administeredPerProcedure",
+        "short": "Was the medication administered exactly according to the procedure (no deviations)? (SNOMED 373149000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Was the medication administered exactly according to the procedure (no deviations)? (SNOMED 373149000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.deviationSpecification",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.medicationAdministration.deviationSpecification",
+        "short": "Specify deviation (conditional: if administeredPerProcedure = No)",
+        "definition": "Specify deviation (conditional: if administeredPerProcedure = No)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters",
+        "short": "Vital Parameters",
+        "definition": "Vital Parameters",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bodyTemperature",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bodyTemperature",
+        "short": "Body temperature (\u00b0C) (LOINC 8310-5)",
+        "definition": "Body temperature (\u00b0C) (LOINC 8310-5)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.pulse",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.pulse",
+        "short": "Pulse (beats/min) (SNOMED 364075005)",
+        "definition": "Pulse (beats/min) (SNOMED 364075005)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureSystolic",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureSystolic",
+        "short": "Blood pressure - systolic (mmHg) (LOINC 8480-6)",
+        "definition": "Blood pressure - systolic (mmHg) (LOINC 8480-6)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureDiastolic",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.vitalParameters.bloodPressureDiastolic",
+        "short": "Blood pressure - diastolic (mmHg) (LOINC 8462-4)",
+        "definition": "Blood pressure - diastolic (mmHg) (LOINC 8462-4)",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "decimal"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation",
+        "short": "Dressing Observation at Insertion Site",
+        "definition": "Dressing Observation at Insertion Site",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.dressingObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.dressingObservation",
+        "short": "Dressing observation at insertion site (SNOMED 364554009) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "definition": "Dressing observation at insertion site (SNOMED 364554009) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.bloody",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.bloody",
+        "short": "Bloody (SNOMED 297968009) | Answers: 373066001 Yes | 373067005 No (conditional: if dressingObservation = Abnormal)",
+        "definition": "Bloody (SNOMED 297968009) | Answers: 373066001 Yes | 373067005 No (conditional: if dressingObservation = Abnormal)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.purulent",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.purulent",
+        "short": "Purulent (SNOMED 225550006) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Purulent (SNOMED 225550006) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.loose",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.loose",
+        "short": "Loose (SNOMED 78799005) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Loose (SNOMED 78799005) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.serous",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.serous",
+        "short": "Serous (SNOMED 447112000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Serous (SNOMED 447112000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.moist",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.moist",
+        "short": "Moist (SNOMED 17461003) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Moist (SNOMED 17461003) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.other",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.dressingObservation.other",
+        "short": "Other dressing observation problem, if applicable (SNOMED 1481000124102)",
+        "definition": "Other dressing observation problem, if applicable (SNOMED 1481000124102)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation",
+        "short": "Insertion Site Observation",
+        "definition": "Insertion Site Observation",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.insertionSiteObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.insertionSiteObservation",
+        "short": "Insertion site observation (SNOMED 386141001) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "definition": "Insertion site observation (SNOMED 386141001) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.blistering",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.blistering",
+        "short": "Blistering (SNOMED 339008) | Answers: 373066001 Yes | 373067005 No (conditional: if insertionSiteObservation = Abnormal)",
+        "definition": "Blistering (SNOMED 339008) | Answers: 373066001 Yes | 373067005 No (conditional: if insertionSiteObservation = Abnormal)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.redness",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.redness",
+        "short": "Redness (SNOMED 371240000) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Redness (SNOMED 371240000) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.hematoma",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.hematoma",
+        "short": "Hematoma (SNOMED 35566002) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Hematoma (SNOMED 35566002) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.pus",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.pus",
+        "short": "Pus (SNOMED 367646009) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Pus (SNOMED 367646009) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.crusting",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.crusting",
+        "short": "Crusting / crust formation (SNOMED 69640009) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Crusting / crust formation (SNOMED 69640009) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.swelling",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.swelling",
+        "short": "Swelling (SNOMED 65124004) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Swelling (SNOMED 65124004) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.extravasation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.extravasation",
+        "short": "Extravasation/infiltration (SNOMED 76676007) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Extravasation/infiltration (SNOMED 76676007) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.other",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.insertionSiteObservation.other",
+        "short": "Other insertion site observation, if applicable (SNOMED 364554009)",
+        "definition": "Other insertion site observation, if applicable (SNOMED 364554009)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation",
+        "short": "Catheter Observation",
+        "definition": "Catheter Observation",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterType",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterType",
+        "short": "Type of catheter (SNOMED 246138005) | Answers: 52124006 Port catheter | 1396546006 1-lumen tunneled | 1396570005 2-lumen tunneled | 1396538005 3-lumen tunneled | 1396531004 Single lumen midline | 1396527005 Double lumen midline | 1396526001 Single lumen PICC | 1396489007 Double lumen PICC | 423954007 Peripheral catheter",
+        "definition": "Type of catheter (SNOMED 246138005) | Answers: 52124006 Port catheter | 1396546006 1-lumen tunneled | 1396570005 2-lumen tunneled | 1396538005 3-lumen tunneled | 1396531004 Single lumen midline | 1396527005 Double lumen midline | 1396526001 Single lumen PICC | 1396489007 Double lumen PICC | 423954007 Peripheral catheter",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterObservation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.catheterObservation",
+        "short": "Catheter observation (SNOMED 1156071007) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "definition": "Catheter observation (SNOMED 1156071007) | Answers: 17621005 Normal | 263654008 Abnormal",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen",
+        "short": "Per-lumen observation (specify per lumen; conditional: if catheterObservation = Abnormal)",
+        "definition": "Per-lumen observation (specify per lumen; conditional: if catheterObservation = Abnormal)",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.colorLumen",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.colorLumen",
+        "short": "Color of lumen hub (SNOMED 1396483008) | Answers: 371253002 Gray | 371251000 White | 371240000 Red | 371250004 Purple",
+        "definition": "Color of lumen hub (SNOMED 1396483008) | Answers: 371253002 Gray | 371251000 White | 371240000 Red | 371250004 Purple",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.bloodAspiration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.bloodAspiration",
+        "short": "Blood aspiration (SNOMED 25797006) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "definition": "Blood aspiration (SNOMED 25797006) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.infusion",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.lumen.infusion",
+        "short": "Infusion (SNOMED 36576007) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "definition": "Infusion (SNOMED 36576007) | Answers: 36203004 Easy | 52925006 Difficult | 385671000 Impossible",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.damagedCatheter",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.damagedCatheter",
+        "short": "Damaged catheter (SNOMED 1156074004) | Answers: 373066001 Yes | 373067005 No",
+        "definition": "Damaged catheter (SNOMED 1156074004) | Answers: 373066001 Yes | 373067005 No",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.other",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.catheterObservation.other",
+        "short": "Other catheter observation, if applicable (SNOMED 406148008)",
+        "definition": "Other catheter observation, if applicable (SNOMED 406148008)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects",
+        "short": "Side Effects",
+        "definition": "Side Effects",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.skinRash",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.skinRash",
+        "short": "Skin rash (SNOMED 271807003) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Skin rash (SNOMED 271807003) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.itching",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.itching",
+        "short": "Itching (SNOMED 418290006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Itching (SNOMED 418290006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.blistersSkinPeeling",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.blistersSkinPeeling",
+        "short": "Blisters/skin peeling (SNOMED 271767006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Blisters/skin peeling (SNOMED 271767006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.nausea",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.nausea",
+        "short": "Nausea (SNOMED 422587007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Nausea (SNOMED 422587007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.vomiting",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.vomiting",
+        "short": "Vomiting (SNOMED 249497008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Vomiting (SNOMED 249497008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.diarrhea",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.diarrhea",
+        "short": "Diarrhea (SNOMED 62315008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Diarrhea (SNOMED 62315008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.constipation",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.constipation",
+        "short": "Constipation (SNOMED 14760008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Constipation (SNOMED 14760008) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.decreasedAppetite",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.decreasedAppetite",
+        "short": "Decreased appetite / taste change (SNOMED 64379006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Decreased appetite / taste change (SNOMED 64379006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painDuringAdministration",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painDuringAdministration",
+        "short": "Pain during administration (SNOMED 698749006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Pain during administration (SNOMED 698749006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painGeneral",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.painGeneral",
+        "short": "Pain general (SNOMED 112104007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Pain general (SNOMED 112104007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.fatigue",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.fatigue",
+        "short": "Fatigue (SNOMED 224960004) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Fatigue (SNOMED 224960004) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.chills",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.chills",
+        "short": "Chills (SNOMED 43724002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Chills (SNOMED 43724002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.candidiasis",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.candidiasis",
+        "short": "Candidiasis / fungal infection (SNOMED 78048006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Candidiasis / fungal infection (SNOMED 78048006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.jointPain",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.jointPain",
+        "short": "Joint pain (SNOMED 57676002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Joint pain (SNOMED 57676002) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.breathingProblems",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.breathingProblems",
+        "short": "Breathing problems / shortness of breath (SNOMED 267036007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Breathing problems / shortness of breath (SNOMED 267036007) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.swellingFaceTongue",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.swellingFaceTongue",
+        "short": "Swelling of face/tongue (SNOMED 278528006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "definition": "Swelling of face/tongue (SNOMED 278528006) | Answers: 2667000 None | 255604002 Mild | 6736007 Moderate | 24484000 Severe",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.otherSymptoms",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.sideEffects.otherSymptoms",
+        "short": "Other symptoms or relevant clinical/psychosocial observations (SNOMED 365275006)",
+        "definition": "Other symptoms or relevant clinical/psychosocial observations (SNOMED 365275006)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp",
+        "short": "Quality Follow-Up",
+        "definition": "Quality Follow-Up",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp.remarks",
+        "path": "opat-continuous-infusion-questionnaire.nursingAssessment.qualityFollowUp.remarks",
+        "short": "Remarks or concerns about patient registration, data sharing, hospital communication, material availability, or other transmural collaboration aspects (SNOMED 276238005)",
+        "definition": "Remarks or concerns about patient registration, data sharing, hospital communication, material availability, or other transmural collaboration aspects (SNOMED 276238005)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      }
+    ]
+  }
+}

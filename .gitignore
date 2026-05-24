@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ropeproject/
+dist/
+*.egg-info/
+
+.DS_Store
+.vscode/
+.idea/
+.claude/
+
+# Signing material — never commit private keys or minted customer tokens
+*.pem
+*.jwt
+private*.pem
+public*.pem

@@ -1,0 +1,14 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "label",
+      "answer": [
+        { "valueString": "urgent" },
+        { "valueString": "follow-up" },
+        { "valueString": "oncology" }
+      ]
+    }
+  ]
+}

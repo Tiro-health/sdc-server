@@ -1,0 +1,13 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://example.org/SD/Note",
+  "name": "Note",
+  "kind": "logical",
+  "type": "Note",
+  "snapshot": {
+    "element": [
+      { "id": "Note", "path": "Note", "min": 0, "max": "*" },
+      { "id": "Note.text", "path": "Note.text", "min": 0, "max": "1", "type": [{ "code": "string" }] }
+    ]
+  }
+}
