@@ -44,7 +44,7 @@ the container exits with code 2 and logs the reason.
 | `FHIR_SDC_LICENSE_FILE` | Path to file containing the JWT | `/etc/sdc-server/license.jwt` |
 | `FHIR_SDC_LICENSE_PUBKEY` | Override the verification pubkey (PEM string) | embedded |
 | `FHIR_SDC_LICENSE_PUBKEY_FILE` | Override the verification pubkey (PEM file) | embedded |
-| `FHIR_SDC_LICENSE_SKIP` | `1` bypasses the gate — **dev only** | unset |
+| `FHIR_SDC_LICENSE_SKIP` | `1` bypasses the gate. **Dev/source only** — the published Docker image bakes `ALLOW_LICENSE_SKIP=False` into bytecode at build time, so the env var is a no-op in the image regardless of what the customer sets. | unset |
 | `STRUCTURE_DEFINITIONS_DIR` | Folder of FHIR `StructureDefinition` JSON files | `/app/data/structure-definitions/` (in image) / `./data/structure-definitions/` (dev) |
 | `HOST` | uvicorn bind host | `0.0.0.0` |
 | `PORT` | uvicorn bind port | `8000` |

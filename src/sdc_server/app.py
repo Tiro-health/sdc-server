@@ -1,5 +1,4 @@
 import logging
-import os
 import time
 from contextlib import asynccontextmanager
 
@@ -7,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
-from sdc_server.license_gate import LicenseError, verify_license
+from sdc_server.license_gate import LicenseError, bypass_requested, verify_license
 from sdc_server.routers import v1
 from sdc_server.utils import OperationOutcomeException
 
@@ -18,7 +17,7 @@ LOGGER = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if os.environ.get("FHIR_SDC_LICENSE_SKIP") == "1":
+    if bypass_requested():
         LOGGER.warning("FHIR_SDC_LICENSE_SKIP=1 — license verification bypassed")
     else:
         try:

@@ -29,6 +29,8 @@ import sys
 import time
 from pathlib import Path
 
+from sdc_server._build_flags import ALLOW_LICENSE_SKIP
+
 # Production public key. Replace before publishing the image.
 # Generated with `python -m sdc_server.license_gate gen-key`.
 EMBEDDED_PUBKEY_PEM: bytes = b"""-----BEGIN PUBLIC KEY-----
@@ -43,6 +45,16 @@ DEFAULT_TOKEN_FILE = "/etc/sdc-server/license.jwt"
 
 class LicenseError(Exception):
     """Raised when the license cannot be loaded or fails verification."""
+
+
+def bypass_requested() -> bool:
+    """True iff the env var asks to skip *and* the build permits it.
+
+    Release builds set ``ALLOW_LICENSE_SKIP = False`` at compile time, so the
+    env var becomes a no-op even if the customer sets it — the baked-in
+    bytecode never reads it.
+    """
+    return ALLOW_LICENSE_SKIP and os.environ.get("FHIR_SDC_LICENSE_SKIP") == "1"
 
 
 def _load_token() -> str:
@@ -107,7 +119,7 @@ def verify_license_or_exit() -> None:
     ``python -m sdc_server.license_gate`` so the Docker entrypoint can gate
     startup before exec'ing uvicorn.
     """
-    if os.environ.get("FHIR_SDC_LICENSE_SKIP") == "1":
+    if bypass_requested():
         print("[license] FHIR_SDC_LICENSE_SKIP=1 — verification bypassed", file=sys.stderr)
         return
 

@@ -63,12 +63,14 @@ RUN chmod +x /usr/local/bin/entrypoint.sh \
     && pip install --no-cache-dir 'fastapi[standard]>=0.112.0' 'pyjwt>=2.8' 'cryptography>=42' \
     && rm -rf /wheels
 
-# Tamper hardening: replace .py sources with .pyc bytecode in the installed
-# packages and lock the install dir read-only. Casual edits ("docker exec, vim
-# license_gate.py, restart") stop working — bytecode can still be decompiled,
-# but raises the bar. See Level 2 (signed-manifest startup check) for the
-# follow-up if tampering shows up in practice.
+# Tamper hardening: bake ALLOW_LICENSE_SKIP=False into the bytecode (so the
+# FHIR_SDC_LICENSE_SKIP env var is a no-op in the published image), then
+# replace .py sources with .pyc and lock the install dir read-only. Bytecode
+# can still be decompiled — this defeats casual edits, not a determined
+# attacker. See Level 2 (signed-manifest startup check) for the follow-up if
+# tampering shows up in practice.
 RUN SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')" \
+    && printf 'ALLOW_LICENSE_SKIP = False\n' > "$SITE_PACKAGES/sdc_server/_build_flags.py" \
     && python -m compileall -q -b "$SITE_PACKAGES/sdc_server" "$SITE_PACKAGES/fhir_sdc" \
     && find "$SITE_PACKAGES/sdc_server" "$SITE_PACKAGES/fhir_sdc" \
             \( -name '*.py' -o -name '__pycache__' \) -exec rm -rf {} + \
