@@ -144,10 +144,12 @@ Tests (the conftest sets `FHIR_SDC_LICENSE_SKIP=1` automatically):
 uv run pytest
 ```
 
-Build the image locally:
+Build the image locally (needs an SSH agent loaded with a key that can read
+the private `fhir-sdc-rs` repo — the key is only borrowed during the build
+and does **not** land in the published image):
 
 ```bash
-docker build -t sdc-server:dev .
+docker build --ssh default -t sdc-server:dev .
 # or override the pinned ref:
-docker build --build-arg FHIR_SDC_REF=v0.1.0-rc9 -t sdc-server:dev .
+docker build --ssh default --build-arg FHIR_SDC_REF=v0.1.0-rc9 -t sdc-server:dev .
 ```
