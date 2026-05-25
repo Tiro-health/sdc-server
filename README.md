@@ -222,16 +222,21 @@ gcloud artifacts repositories set-cleanup-policies public \
     --location=europe-west1 --project=tiroapp-4cb17 \
     --policy=cleanup-policy.json
 
-# 4. Connect the GitHub repo to Cloud Build (browser, once):
+# 4. Connect the GitHub repo (2nd-gen Cloud Build repos). One-time in browser:
 #    https://console.cloud.google.com/cloud-build/triggers/connect?project=tiroapp-4cb17
+#    Then map the repo under the existing `atticus-frontend` connection:
+gcloud builds repositories create Tiro-health-sdc-server \
+    --connection=atticus-frontend --region=europe-west1 --project=tiroapp-4cb17 \
+    --remote-uri=https://github.com/Tiro-health/sdc-server.git
 
-# 5. Create the triggers
+# 5. Create the triggers (2nd-gen syntax: --repository, not --repo-owner)
+REPO=projects/tiroapp-4cb17/locations/europe-west1/connections/atticus-frontend/repositories/Tiro-health-sdc-server
 gcloud builds triggers create github \
-    --name=sdc-server-main --project=tiroapp-4cb17 \
-    --repo-owner=Tiro-health --repo-name=sdc-server \
+    --name=sdc-server-main --region=europe-west1 --project=tiroapp-4cb17 \
+    --repository="$REPO" \
     --branch-pattern='^main$' --build-config=cloudbuild.yaml
 gcloud builds triggers create github \
-    --name=sdc-server-tag --project=tiroapp-4cb17 \
-    --repo-owner=Tiro-health --repo-name=sdc-server \
+    --name=sdc-server-tag --region=europe-west1 --project=tiroapp-4cb17 \
+    --repository="$REPO" \
     --tag-pattern='^v.*$' --build-config=cloudbuild.yaml
 ```
