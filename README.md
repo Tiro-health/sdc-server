@@ -163,3 +163,75 @@ gcloud auth print-access-token > /tmp/gar-token
 docker build --secret id=gar_token,src=/tmp/gar-token -t sdc-server:dev .
 shred -u /tmp/gar-token   # tokens expire in ~1h anyway, but tidy up
 ```
+
+---
+
+## CI / publishing
+
+The image is built and published by Cloud Build (config in
+[`cloudbuild.yaml`](cloudbuild.yaml)). Published location:
+`europe-west1-docker.pkg.dev/tiroapp-4cb17/public/tiro-sdc-server`. The
+`public` GAR repo is granted `allUsers` reader so customers can `docker pull`
+without a Tiro identity.
+
+Tagging:
+
+| Event | Tags applied |
+|---|---|
+| Push to `main` | `:SHORT_SHA`, `:main` |
+| Push of a `v*` git tag | `:SHORT_SHA`, `:TAG_NAME`, `:latest` |
+
+Manual invocation (for testing, no GitHub trigger needed):
+
+```bash
+gcloud builds submit --config=cloudbuild.yaml \
+    --substitutions=SHORT_SHA=$(git rev-parse --short HEAD),BRANCH_NAME=manual \
+    .
+```
+
+The destination repo's retention policy (see
+[`cleanup-policy.json`](cleanup-policy.json)):
+
+- Keep forever: any tag starting with `v` or `latest`
+- Delete: untagged versions older than 7 days
+- Delete: tagged versions older than 90 days (e.g. SHA, `main`)
+
+### One-time admin setup
+
+Run once from a Tiro admin's shell with `gcloud` configured for
+`tiroapp-4cb17`:
+
+```bash
+# 1. Public pull access on the destination repo
+gcloud artifacts repositories add-iam-policy-binding public \
+    --location=europe-west1 --project=tiroapp-4cb17 \
+    --member=allUsers --role=roles/artifactregistry.reader
+
+# 2. Cloud Build SA → reader on atticus, writer on public
+PROJECT_NUMBER=$(gcloud projects describe tiroapp-4cb17 --format='value(projectNumber)')
+CB_SA="${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
+gcloud artifacts repositories add-iam-policy-binding atticus \
+    --location=europe-west1 --project=tiroapp-4cb17 \
+    --member="serviceAccount:${CB_SA}" --role=roles/artifactregistry.reader
+gcloud artifacts repositories add-iam-policy-binding public \
+    --location=europe-west1 --project=tiroapp-4cb17 \
+    --member="serviceAccount:${CB_SA}" --role=roles/artifactregistry.writer
+
+# 3. Apply the cleanup policy
+gcloud artifacts repositories set-cleanup-policies public \
+    --location=europe-west1 --project=tiroapp-4cb17 \
+    --policy=cleanup-policy.json
+
+# 4. Connect the GitHub repo to Cloud Build (browser, once):
+#    https://console.cloud.google.com/cloud-build/triggers/connect?project=tiroapp-4cb17
+
+# 5. Create the triggers
+gcloud builds triggers create github \
+    --name=sdc-server-main --project=tiroapp-4cb17 \
+    --repo-owner=Tiro-health --repo-name=sdc-server \
+    --branch-pattern='^main$' --build-config=cloudbuild.yaml
+gcloud builds triggers create github \
+    --name=sdc-server-tag --project=tiroapp-4cb17 \
+    --repo-owner=Tiro-health --repo-name=sdc-server \
+    --tag-pattern='^v.*$' --build-config=cloudbuild.yaml
+```

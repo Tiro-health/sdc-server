@@ -1,0 +1,26 @@
+[
+  {
+    "name": "keep-release-and-latest",
+    "action": {"type": "Keep"},
+    "condition": {
+      "tagState": "TAGGED",
+      "tagPrefixes": ["v", "latest"]
+    }
+  },
+  {
+    "name": "delete-old-untagged",
+    "action": {"type": "Delete"},
+    "condition": {
+      "tagState": "UNTAGGED",
+      "olderThan": "7d"
+    }
+  },
+  {
+    "name": "delete-old-tagged",
+    "action": {"type": "Delete"},
+    "condition": {
+      "tagState": "TAGGED",
+      "olderThan": "90d"
+    }
+  }
+]

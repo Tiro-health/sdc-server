@@ -1,0 +1,65 @@
+# Cloud Build pipeline for tiro-sdc-server.
+#
+# Pulls fhir-sdc from atticus (private Python GAR) using a short-lived access
+# token minted from Cloud Build's default SA, then publishes the image to
+# europe-west1-docker.pkg.dev/$PROJECT_ID/public/tiro-sdc-server.
+#
+# Triggers (configured out-of-band via `gcloud builds triggers create`):
+#   - push to main      → tags :$SHORT_SHA + :main
+#   - push of a v* tag  → tags :$SHORT_SHA + :$TAG_NAME + :latest
+#
+# Manual invocation (for testing without GitHub):
+#   gcloud builds submit --config=cloudbuild.yaml \
+#     --substitutions=SHORT_SHA=$(git rev-parse --short HEAD),BRANCH_NAME=manual
+#
+# `$VAR` in this file is a Cloud Build substitution (expanded by Cloud Build
+# before bash runs). `$$VAR` is the literal `$VAR` for the shell.
+
+steps:
+  # Cloud Build's default SA already has reader on atticus; print an OAuth
+  # token to the shared /workspace volume so the docker build step can
+  # mount it as a BuildKit secret.
+  - name: gcr.io/cloud-builders/gcloud
+    id: mint-token
+    entrypoint: bash
+    args:
+      - -c
+      - gcloud auth print-access-token > /workspace/gar-token
+
+  - name: gcr.io/cloud-builders/docker
+    id: build-and-push
+    env:
+      - DOCKER_BUILDKIT=1
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        set -euo pipefail
+        IMAGE="europe-west1-docker.pkg.dev/$PROJECT_ID/public/tiro-sdc-server"
+
+        # :SHORT_SHA is always pushed. Branch and tag triggers add their own.
+        TAGS=("$$IMAGE:$SHORT_SHA")
+        if [ -n "$BRANCH_NAME" ]; then
+          TAGS+=("$$IMAGE:$BRANCH_NAME")
+        fi
+        if [ -n "$TAG_NAME" ]; then
+          TAGS+=("$$IMAGE:$TAG_NAME" "$$IMAGE:latest")
+        fi
+
+        BUILD_ARGS=()
+        for t in "$${TAGS[@]}"; do
+          BUILD_ARGS+=(-t "$$t")
+        done
+
+        docker build \
+          --secret=id=gar_token,src=/workspace/gar-token \
+          "$${BUILD_ARGS[@]}" \
+          .
+
+        for t in "$${TAGS[@]}"; do
+          docker push "$$t"
+        done
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_HIGHCPU_8
