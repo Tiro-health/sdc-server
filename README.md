@@ -66,12 +66,18 @@ The production signing key lives in Google Secret Manager:
 | Field | Value |
 |---|---|
 | Project | `tiroapp-4cb17` |
-| Secret name | `sdc-server-license-signing-key` |
+| Secret name | `atticus-license-signing-key` |
 | Location | `europe-west1` (user-managed replication) |
 
 The matching public key is embedded in
 [`src/sdc_server/license_gate.py`](src/sdc_server/license_gate.py) as
 `EMBEDDED_PUBKEY_PEM` and baked into every image at build time.
+
+The secret is named `atticus-` rather than `sdc-server-` on purpose: it's
+the umbrella signing key for all Tiro BUSL-gated products. Per-product
+scoping happens through the JWT `aud` claim (sdc-server requires
+`aud="sdc-server"`), so a token minted for one product can't be used to
+unlock another even though they share signing material.
 
 ### Mint a customer license
 
@@ -83,7 +89,7 @@ the duration of `mint_license.py`.
 KEY=$(mktemp)
 trap 'shred -u "$KEY" 2>/dev/null || rm -f "$KEY"' EXIT
 gcloud secrets versions access latest \
-    --secret=sdc-server-license-signing-key \
+    --secret=atticus-license-signing-key \
     --project=tiroapp-4cb17 > "$KEY"
 
 uv run --no-project --with cryptography --with pyjwt \
@@ -109,9 +115,9 @@ the keypair:
 1. Generate a new keypair locally with
    [`scripts/gen_license_keypair.py`](scripts/gen_license_keypair.py).
 2. Add the new private key as a new version of the Secret Manager secret:
-   `gcloud secrets versions add sdc-server-license-signing-key --data-file=…`.
+   `gcloud secrets versions add atticus-license-signing-key --data-file=…`.
 3. Disable old versions:
-   `gcloud secrets versions disable 1 --secret=sdc-server-license-signing-key`.
+   `gcloud secrets versions disable 1 --secret=atticus-license-signing-key`.
 4. Paste the new public PEM into `EMBEDDED_PUBKEY_PEM`, commit, push. Cloud
    Build rebuilds the image; every outstanding token now fails verification.
 5. Re-mint every active customer's license with the new private key.
