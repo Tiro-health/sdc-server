@@ -58,11 +58,11 @@ RUN SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["p
     && rm -rf /app/src /app/pyproject.toml /app/README.md
 
 # Level 2 hardening: SHA-256 every .pyc and the entrypoint, sign the manifest
-# with the atticus license key, ship the manifest + signature + pubkey to
-# /app/integrity/. entrypoint.sh verifies both signature and hashes before
-# invoking Python. Forging the manifest needs the private key (in Secret
-# Manager); patching files breaks the hashes. The signing key is mounted
-# only during this RUN — never lands in an image layer.
+# with the atticus license key, ship to /app/integrity/. The verifier
+# (`python -m sdc_server.integrity_check`, run by entrypoint.sh before the
+# license gate) reads its public key from EMBEDDED_PUBKEY_PEM, so we do NOT
+# need to ship a separate pubkey file. The signing key is mounted only
+# during this RUN — never lands in an image layer.
 RUN --mount=type=secret,id=license_key,required=true \
     SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')" \
     && mkdir -p /app/integrity \
@@ -72,8 +72,7 @@ RUN --mount=type=secret,id=license_key,required=true \
     && openssl pkeyutl -sign \
         -inkey /run/secrets/license_key \
         -rawin -in /app/integrity/manifest.sha256 \
-        -out /app/integrity/manifest.sig \
-    && python -c "from sdc_server.license_gate import EMBEDDED_PUBKEY_PEM; import pathlib; pathlib.Path('/app/integrity/pubkey.pem').write_bytes(EMBEDDED_PUBKEY_PEM)"
+        -out /app/integrity/manifest.sig
 
 # Non-root user. Install dirs, bundled data, entrypoint, and integrity files
 # are chmod'd read-only so the runtime user cannot modify them in place.
