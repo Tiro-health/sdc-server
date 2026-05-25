@@ -28,6 +28,22 @@ steps:
       - -c
       - gcloud auth print-access-token > /workspace/gar-token
 
+  # Fetch the atticus license signing key from Secret Manager. Cloud Build's
+  # default SA needs roles/secretmanager.secretAccessor on this secret. The
+  # key is borrowed during the docker build (BuildKit secret mount) only to
+  # sign the bytecode integrity manifest — it never lands in any image
+  # layer.
+  - name: gcr.io/cloud-builders/gcloud
+    id: fetch-license-key
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud secrets versions access latest \
+            --secret=atticus-license-signing-key --project=$PROJECT_ID \
+            > /workspace/license-key.pem
+        chmod 600 /workspace/license-key.pem
+
   # Install QEMU binfmt handlers so the linux/arm64 leg can run on this
   # amd64 host.
   - name: docker:24
@@ -72,6 +88,7 @@ steps:
         docker buildx build \
           --platform=linux/amd64,linux/arm64 \
           --secret=id=gar_token,src=/workspace/gar-token \
+          --secret=id=license_key,src=/workspace/license-key.pem \
           $$T_ARGS \
           --push \
           .
