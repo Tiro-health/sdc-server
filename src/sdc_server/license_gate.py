@@ -34,7 +34,7 @@ from sdc_server._build_flags import ALLOW_LICENSE_SKIP
 # Production public key. Replace before publishing the image.
 # Generated with `python -m sdc_server.license_gate gen-key`.
 EMBEDDED_PUBKEY_PEM: bytes = b"""-----BEGIN PUBLIC KEY-----
-MCowBQYDK2VwAyEAx6CK9t38opX+b4Rl08VuxMxQ5dOOQ/gaOFYkYS3384s=
+MCowBQYDK2VwAyEAeDEgzpRLN/miuTecR9DL5KDGejnns5cu5Khfo3YtC7M=
 -----END PUBLIC KEY-----
 """
 

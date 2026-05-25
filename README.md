@@ -61,24 +61,37 @@ edits, not a determined attacker. Customers wanting source must contact us.
 
 ## Issuing a license (internal)
 
-One-time setup — generate the signing keypair, keep the private key safe,
-paste the public key into [`src/sdc_server/license_gate.py`](src/sdc_server/license_gate.py)
-as `EMBEDDED_PUBKEY_PEM`, then rebuild the image.
+The production signing key lives in Google Secret Manager:
+
+| Field | Value |
+|---|---|
+| Project | `tiroapp-4cb17` |
+| Secret name | `sdc-server-license-signing-key` |
+| Location | `europe-west1` (user-managed replication) |
+
+The matching public key is embedded in
+[`src/sdc_server/license_gate.py`](src/sdc_server/license_gate.py) as
+`EMBEDDED_PUBKEY_PEM` and baked into every image at build time.
+
+### Mint a customer license
+
+The signing key is fetched from Secret Manager into a temp file, used to
+sign one token, then shredded. The key never persists on disk longer than
+the duration of `mint_license.py`.
 
 ```bash
-uv run python scripts/gen_license_keypair.py \
-    --out-private ./private.pem \
-    --out-public ./public.pem
-```
+KEY=$(mktemp)
+trap 'shred -u "$KEY" 2>/dev/null || rm -f "$KEY"' EXIT
+gcloud secrets versions access latest \
+    --secret=sdc-server-license-signing-key \
+    --project=tiroapp-4cb17 > "$KEY"
 
-Mint a token for a customer:
-
-```bash
-uv run python scripts/mint_license.py \
-    --private-key ./private.pem \
-    --subject "acme-hospital" \
-    --days 90 \
-    --out acme.jwt
+uv run --no-project --with cryptography --with pyjwt \
+    python scripts/mint_license.py \
+        --private-key "$KEY" \
+        --subject "acme-hospital" \
+        --days 90 \
+        --out acme.jwt
 ```
 
 Claims minted:
@@ -86,6 +99,24 @@ Claims minted:
 - `aud = sdc-server`
 - `sub` = whatever you pass to `--subject`
 - `iat`, `exp` populated from `--days`
+
+### Rotating the signing key
+
+There is **no revocation list** — a minted token is valid until `exp`. The
+only way to invalidate outstanding tokens before they expire is to rotate
+the keypair:
+
+1. Generate a new keypair locally with
+   [`scripts/gen_license_keypair.py`](scripts/gen_license_keypair.py).
+2. Add the new private key as a new version of the Secret Manager secret:
+   `gcloud secrets versions add sdc-server-license-signing-key --data-file=…`.
+3. Disable old versions:
+   `gcloud secrets versions disable 1 --secret=sdc-server-license-signing-key`.
+4. Paste the new public PEM into `EMBEDDED_PUBKEY_PEM`, commit, push. Cloud
+   Build rebuilds the image; every outstanding token now fails verification.
+5. Re-mint every active customer's license with the new private key.
+
+Plan rotations carefully — step 4 is a hard cutover.
 
 Extra claims via `--claim key=value` (repeatable) — useful for tracing leaks.
 
