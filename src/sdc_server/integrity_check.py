@@ -9,15 +9,15 @@ The verification public key is the same one used for license JWTs
 (``EMBEDDED_PUBKEY_PEM`` in ``sdc_server.license_gate``) — both come from the
 atticus signing key in Google Secret Manager.
 
-This module is invoked by ``entrypoint.sh`` as ``python -m
-sdc_server.integrity_check`` *before* the license gate. On success it prints
-one line to stderr; on any failure it prints the reason and exits 2.
+This check runs from inside the FastAPI lifespan (see ``sdc_server.app``) so
+it cannot be bypassed by replacing the entrypoint script. It is also
+runnable standalone as ``python -m sdc_server.integrity_check`` for
+diagnostics.
 
 Note: this check is structurally limited — a root attacker inside the
-container can patch this module to no-op the check, just as they could patch
-the previous shell-based check. The defence here is depth, not strength.
-For stronger guarantees, sign the published image with cosign and verify
-out-of-band before deploying.
+container can patch this module to no-op the check. The defence here is
+depth, not strength. For stronger guarantees, sign the published image
+with cosign and verify out-of-band before deploying.
 """
 from __future__ import annotations
 
@@ -42,10 +42,17 @@ class IntegrityError(Exception):
 def verify_integrity() -> None:
     """Verify the manifest signature, then every file it references.
 
-    Raises ``IntegrityError`` on any mismatch. Quiet on success.
+    Raises ``IntegrityError`` on any mismatch or if the manifest files are
+    missing. Quiet on success.
     """
-    manifest_bytes = MANIFEST_PATH.read_bytes()
-    signature = SIGNATURE_PATH.read_bytes()
+    try:
+        manifest_bytes = MANIFEST_PATH.read_bytes()
+        signature = SIGNATURE_PATH.read_bytes()
+    except FileNotFoundError as exc:
+        raise IntegrityError(
+            f"integrity manifest missing at {INTEGRITY_DIR} — image was not "
+            "built with the hardening step"
+        ) from exc
     pubkey = load_pem_public_key(EMBEDDED_PUBKEY_PEM)
 
     try:
@@ -75,6 +82,15 @@ def verify_integrity() -> None:
             raise IntegrityError(
                 f"file hash does not match the signed manifest: {path}"
             )
+
+
+def manifest_present() -> bool:
+    """True iff both the manifest and its signature exist on disk.
+
+    Dev trees never have ``/app/integrity/``; only the production Docker
+    image bakes it in.
+    """
+    return MANIFEST_PATH.is_file() and SIGNATURE_PATH.is_file()
 
 
 def main() -> None:

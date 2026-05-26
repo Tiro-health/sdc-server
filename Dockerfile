@@ -58,11 +58,11 @@ RUN SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["p
     && rm -rf /app/src /app/pyproject.toml /app/README.md
 
 # Level 2 hardening: SHA-256 every .pyc and the entrypoint, sign the manifest
-# with the atticus license key, ship to /app/integrity/. The verifier
-# (`python -m sdc_server.integrity_check`, run by entrypoint.sh before the
-# license gate) reads its public key from EMBEDDED_PUBKEY_PEM, so we do NOT
-# need to ship a separate pubkey file. The signing key is mounted only
-# during this RUN — never lands in an image layer.
+# with the atticus license key, ship to /app/integrity/. The verifier runs
+# from the FastAPI lifespan (sdc_server.app), reads its public key from
+# EMBEDDED_PUBKEY_PEM, so we do NOT need to ship a separate pubkey file.
+# The signing key is mounted only during this RUN — never lands in an image
+# layer.
 RUN --mount=type=secret,id=license_key,required=true \
     SITE_PACKAGES="$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')" \
     && mkdir -p /app/integrity \
