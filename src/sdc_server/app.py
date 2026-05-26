@@ -6,6 +6,12 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
+from sdc_server._build_flags import ALLOW_LICENSE_SKIP
+from sdc_server.integrity_check import (
+    IntegrityError,
+    manifest_present,
+    verify_integrity,
+)
 from sdc_server.license_gate import LicenseError, bypass_requested, verify_license
 from sdc_server.routers import v1
 from sdc_server.utils import OperationOutcomeException
@@ -17,6 +23,26 @@ LOGGER = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Integrity check first: in a release build the manifest is baked in by
+    # the Dockerfile and must verify. In a dev build (ALLOW_LICENSE_SKIP=True)
+    # the source tree has no /app/integrity/, so skip with a warning.
+    if not manifest_present():
+        if ALLOW_LICENSE_SKIP:
+            LOGGER.warning(
+                "Integrity manifest not found — skipping (dev build only)"
+            )
+        else:
+            raise IntegrityError(
+                "integrity manifest missing in release build — refusing to start"
+            )
+    else:
+        try:
+            verify_integrity()
+        except IntegrityError as exc:
+            LOGGER.error("Integrity check failed: %s", exc)
+            raise
+        LOGGER.info("Integrity manifest verified")
+
     if bypass_requested():
         LOGGER.warning("FHIR_SDC_LICENSE_SKIP=1 — license verification bypassed")
     else:
