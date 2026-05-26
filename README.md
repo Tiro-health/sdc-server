@@ -1,5 +1,12 @@
 # sdc-server
 
+> [!WARNING]
+> **Work in progress — building in public.** This repository is a public
+> reconstruction of Tiro.health's internal FHIR SDC server. We're rebuilding
+> it in the open so the community can follow along, contribute, and depend
+> on a transparent reference implementation. APIs, image tags, and behavior
+> may change without notice until a 1.0 release is cut.
+
 A FHIR SDC `$extract` service — HTTP front-end for the `fhir-sdc` Rust core,
 distributed as a public Docker image under [BUSL-1.1](./LICENSE).
 
@@ -84,15 +91,6 @@ Response shape is content-negotiated and depends on what the
 
 Any other error returns an `OperationOutcome` with a meaningful issue
 code.
-
-## Security
-
-The image is hardened against casual tampering: Python code ships as
-`.pyc` bytecode (no `.py` sources), the install dir is read-only for the
-runtime user, and an Ed25519-signed integrity manifest is verified at
-startup. This stops "open editor, change one line, restart" attacks, not
-a determined attacker with root. The license check itself is the
-contractual gate; image hardening is defence in depth.
 
 ## Support and licensing
 
