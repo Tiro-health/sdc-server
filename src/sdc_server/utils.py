@@ -33,6 +33,21 @@ class OperationOutcomeException(HTTPException):
         )
 
 
+def operation_not_implemented(name: str) -> OperationOutcomeException:
+    """OperationOutcome for an SDC operation that is wired up but whose
+    engine is not implemented yet (HTTP 501)."""
+    return OperationOutcomeException(
+        status_code=501,
+        issues=[
+            {
+                "severity": "error",
+                "code": "not-supported",
+                "diagnostics": f"The ${name} operation is not implemented yet.",
+            }
+        ],
+    )
+
+
 def bundle_transaction(resources: list[dict]) -> dict:
     """Wrap concrete FHIR resources in a `transaction` Bundle ready to be
     POSTed back to a FHIR server (per the SDC `$extract` operation spec).

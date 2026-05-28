@@ -95,6 +95,20 @@ def test_non_parameters_body(client):
     assert body["issue"][0]["code"] == "structure"
 
 
+def test_extract_bare_questionnaire_response_misses_questionnaire(client):
+    """A bare QuestionnaireResponse fills the body slot, but `questionnaire` is
+    still required — so it fails required-validation rather than structure."""
+    r = client.post(
+        "/api/v1/QuestionnaireResponse/$extract",
+        json={"resourceType": "QuestionnaireResponse", "status": "completed"},
+    )
+    assert r.status_code == 400
+    body = r.json()
+    assert body["resourceType"] == "OperationOutcome"
+    assert body["issue"][0]["code"] == "required"
+    assert "questionnaire" in body["issue"][0]["diagnostics"]
+
+
 def test_metadata(client):
     r = client.get("/api/v1/metadata")
     assert r.status_code == 200
@@ -106,4 +120,4 @@ def test_metadata(client):
         for resource in body["rest"][0]["resource"]
         for op in resource.get("operation", [])
     }
-    assert "extract" in op_names
+    assert {"extract", "populate", "validate"} <= op_names
