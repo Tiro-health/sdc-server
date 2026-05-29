@@ -1,13 +1,11 @@
 import logging
+from typing import Annotated, NotRequired, TypedDict
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fhir_sdc import extract as sdc_extract
 
-from sdc_server.fhir_parameters import (
-    load_questionnaire,
-    load_questionnaire_response,
-)
+from sdc_server.fhir_parameters import Param, operation_parameters
 from sdc_server.structure_definitions import get_structure_definition_loader
 from sdc_server.utils import (
     FhirJSONResponse,
@@ -16,6 +14,7 @@ from sdc_server.utils import (
     binary_wrap_json,
     bundle_transaction,
     client_preferred_content_type,
+    operation_not_implemented,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -39,23 +38,46 @@ def capability_statement():
                 "mode": "server",
                 "resource": [
                     {
+                        "type": "Questionnaire",
+                        "operation": [
+                            {
+                                "name": "populate",
+                                "definition": "http://hl7.org/fhir/uv/sdc/OperationDefinition/Questionnaire-populate",
+                            }
+                        ],
+                    },
+                    {
                         "type": "QuestionnaireResponse",
                         "operation": [
                             {
                                 "name": "extract",
                                 "definition": "http://hl7.org/fhir/uv/sdc/OperationDefinition/QuestionnaireResponse-extract",
-                            }
+                            },
+                            {
+                                "name": "validate",
+                                "definition": "http://hl7.org/fhir/uv/sdc/OperationDefinition/QuestionnaireResponse-validate",
+                            },
                         ],
-                    }
+                    },
                 ],
             }
         ],
     }
 
 
+class ExtractParams(TypedDict):
+    questionnaire_response: Annotated[
+        dict, Param(min=1, as_body=True, type="QuestionnaireResponse")
+    ]
+    questionnaire: Annotated[dict, Param(min=1, type="Questionnaire")]
+
+
+extract_params = operation_parameters(ExtractParams)
+
+
 @router.post("/QuestionnaireResponse/$extract")
 def questionnaire_response_extract(
-    parameters: dict,
+    params: Annotated[ExtractParams, Depends(extract_params)],
     response_content_type: str = Depends(client_preferred_content_type(
         "application/fhir+json",
         "application/json",
@@ -64,8 +86,10 @@ def questionnaire_response_extract(
     """
     FHIR SDC `$extract` operation — definition-based extraction.
 
-    Body must be a FHIR `Parameters` resource with:
-      - `questionnaire-response` (required, inline resource)
+    Invoke with either a FHIR `Parameters` resource or a bare
+    `QuestionnaireResponse` body, carrying:
+      - `questionnaire-response` (required, inline resource — also accepted as
+        the bare request body)
       - `questionnaire`          (required, inline resource)
 
     StructureDefinitions are loaded from the server-side folder configured via
@@ -82,35 +106,8 @@ def questionnaire_response_extract(
       `OperationOutcome`. Split the Questionnaire so each extraction context
       yields one shape.
     """
-    try:
-        qr = load_questionnaire_response(parameters)
-        q = load_questionnaire(parameters)
-    except ValueError as e:
-        raise OperationOutcomeException(
-            status_code=400,
-            issues=[{"severity": "error", "code": "structure", "diagnostics": str(e)}],
-        )
-
-    missing = [
-        name
-        for name, val in (("questionnaire-response", qr), ("questionnaire", q))
-        if val is None
-    ]
-    if missing:
-        raise OperationOutcomeException(
-            status_code=400,
-            issues=[
-                {
-                    "severity": "error",
-                    "code": "required",
-                    "diagnostics": f"Missing required parameter: {name}",
-                }
-                for name in missing
-            ],
-        )
-    assert qr is not None and q is not None, (
-        "questionnaire-response and questionnaire should be known here"
-    )
+    q = params["questionnaire"]
+    qr = params["questionnaire_response"]
 
     loader = get_structure_definition_loader()
     extractor = sdc_extract.DefinitionBasedExtractor(loader, allow_logical_models=True)
@@ -149,3 +146,99 @@ def questionnaire_response_extract(
         return FhirJSONResponse(binary_wrap_json(payload))
 
     return FhirJSONResponse(bundle_transaction(fhir_entries))
+
+
+class PopulateContext(TypedDict):
+    """One SDC `$populate` `context` entry: an alias `name` and its `content`
+    (an inline resource or a Reference). Parsed as a nested multi-part spec —
+    the field `Param`s drive sub-part parsing and required-validation, so a
+    `context` missing `content` fails as `context.content`."""
+
+    name: Annotated[str, Param(min=1, type="string")]
+    content: Annotated[dict, Param(min=1, type="Resource", allowed_types=("Resource", "Reference"))]
+
+
+class PopulateParams(TypedDict):
+    questionnaire: Annotated[
+        dict, Param(min=1, as_body=True, type="Questionnaire")
+    ]
+    subject: NotRequired[Annotated[dict | None, Param(type="Reference")]]
+    context: Annotated[list[PopulateContext], Param(max="*")]
+    local: NotRequired[Annotated[bool | None, Param(type="boolean")]]
+
+
+populate_params = operation_parameters(PopulateParams)
+
+
+@router.post("/Questionnaire/$populate")
+def questionnaire_populate(
+    params: Annotated[PopulateParams, Depends(populate_params)],
+    response_content_type: str = Depends(client_preferred_content_type(
+        "application/fhir+json",
+        "application/json",
+    )),
+) -> Response:
+    """
+    FHIR SDC `$populate` operation — pre-fill a QuestionnaireResponse.
+
+    Invoke with either a FHIR `Parameters` resource or a bare `Questionnaire`
+    body, carrying:
+      - `questionnaire` (required, inline resource — also accepted as the bare
+        request body; this server does not resolve canonical references)
+      - `subject`, `context` (repeating), `local` — accepted but currently
+        ignored.
+
+    NOTE: the population engine is not implemented yet; this endpoint is wired
+    up (parameter parsing, validation, conformance) and returns a `501`
+    OperationOutcome until the engine lands.
+    """
+    questionnaire = params["questionnaire"]
+
+    # TODO(engine): run population (observation/expression/context based) and
+    # return a `Parameters` resource whose `response` part is the populated
+    # QuestionnaireResponse, alongside any `issues`.
+    raise operation_not_implemented("populate")
+
+
+class ValidateParams(TypedDict):
+    questionnaire_response: Annotated[
+        dict, Param(min=1, as_body=True, type="QuestionnaireResponse")
+    ]
+    questionnaire: NotRequired[Annotated[dict | None, Param(type="Questionnaire")]]
+    mode: NotRequired[Annotated[str | None, Param(type="code")]]
+    profile: NotRequired[Annotated[str | None, Param(type="canonical")]]
+
+
+validate_params = operation_parameters(ValidateParams)
+
+
+@router.post("/QuestionnaireResponse/$validate")
+def questionnaire_response_validate(
+    params: Annotated[ValidateParams, Depends(validate_params)],
+    response_content_type: str = Depends(client_preferred_content_type(
+        "application/fhir+json",
+        "application/json",
+    )),
+) -> Response:
+    """
+    FHIR SDC `$validate` operation — validate a QuestionnaireResponse against
+    its Questionnaire.
+
+    Invoke with either a FHIR `Parameters` resource or a bare
+    `QuestionnaireResponse` body, carrying:
+      - `questionnaire-response` (required, inline resource — the resource under
+        test; also accepted as the bare request body)
+      - `questionnaire` (optional inline; the QR normally references it by
+        canonical, which this server cannot resolve), `mode`, `profile` —
+        accepted but currently ignored.
+
+    NOTE: the validation engine is not implemented yet; this endpoint is wired
+    up (parameter parsing, validation, conformance) and returns a `501`
+    OperationOutcome until the engine lands.
+    """
+    qr = params["questionnaire_response"]
+
+    # TODO(engine): validate the QuestionnaireResponse against its Questionnaire
+    # (required items, answer cardinality/type, constraints) and return the
+    # resulting OperationOutcome.
+    raise operation_not_implemented("validate")
