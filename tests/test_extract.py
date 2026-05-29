@@ -84,7 +84,10 @@ def test_missing_required_parameters(client):
     assert codes == {"required"}
 
 
-def test_non_parameters_body(client):
+def test_non_parameters_body_fills_body_slot(client):
+    """A bare, non-Parameters body fills the `as_body` slot regardless of type
+    (no type checking) — so a Bundle is taken as the questionnaire-response and
+    the request fails on the still-missing `questionnaire`, not on structure."""
     r = client.post(
         "/api/v1/QuestionnaireResponse/$extract",
         json={"resourceType": "Bundle"},
@@ -92,7 +95,8 @@ def test_non_parameters_body(client):
     assert r.status_code == 400
     body = r.json()
     assert body["resourceType"] == "OperationOutcome"
-    assert body["issue"][0]["code"] == "structure"
+    assert body["issue"][0]["code"] == "required"
+    assert "questionnaire" in body["issue"][0]["diagnostics"]
 
 
 def test_extract_bare_questionnaire_response_misses_questionnaire(client):

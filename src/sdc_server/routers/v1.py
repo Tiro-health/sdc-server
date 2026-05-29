@@ -66,19 +66,13 @@ def capability_statement():
 
 
 class ExtractParams(TypedDict):
-    questionnaire_response: dict
-    questionnaire: dict
+    questionnaire_response: Annotated[
+        dict, Param(min=1, as_body=True, type="QuestionnaireResponse")
+    ]
+    questionnaire: Annotated[dict, Param(min=1, type="Questionnaire")]
 
 
-extract_params = operation_parameters(
-    Param(
-        "questionnaire-response",
-        required=True,
-        as_body=True,
-        resource_type="QuestionnaireResponse",
-    ),
-    Param("questionnaire", required=True, resource_type="Questionnaire"),
-)
+extract_params = operation_parameters(ExtractParams)
 
 
 @router.post("/QuestionnaireResponse/$extract")
@@ -156,25 +150,24 @@ def questionnaire_response_extract(
 
 class PopulateContext(TypedDict):
     """One SDC `$populate` `context` entry: an alias `name` and its `content`
-    (an inline resource or a Reference)."""
+    (an inline resource or a Reference). Parsed as a nested multi-part spec —
+    the field `Param`s drive sub-part parsing and required-validation, so a
+    `context` missing `content` fails as `context.content`."""
 
-    name: str
-    content: dict
+    name: Annotated[str, Param(min=1, type="string")]
+    content: Annotated[dict, Param(min=1, type="Resource", allowed_types=("Resource", "Reference"))]
 
 
 class PopulateParams(TypedDict):
-    questionnaire: dict
-    subject: NotRequired[dict | None]
-    context: list[PopulateContext]
-    local: NotRequired[bool | None]
+    questionnaire: Annotated[
+        dict, Param(min=1, as_body=True, type="Questionnaire")
+    ]
+    subject: NotRequired[Annotated[dict | None, Param(type="Reference")]]
+    context: Annotated[list[PopulateContext], Param(max="*")]
+    local: NotRequired[Annotated[bool | None, Param(type="boolean")]]
 
 
-populate_params = operation_parameters(
-    Param("questionnaire", required=True, as_body=True, resource_type="Questionnaire"),
-    Param("subject", kind="value"),
-    Param("context", kind="part", repeats=True),
-    Param("local", kind="value"),
-)
+populate_params = operation_parameters(PopulateParams)
 
 
 @router.post("/Questionnaire/$populate")
@@ -208,23 +201,15 @@ def questionnaire_populate(
 
 
 class ValidateParams(TypedDict):
-    questionnaire_response: dict
-    questionnaire: NotRequired[dict | None]
-    mode: NotRequired[str | None]
-    profile: NotRequired[str | None]
+    questionnaire_response: Annotated[
+        dict, Param(min=1, as_body=True, type="QuestionnaireResponse")
+    ]
+    questionnaire: NotRequired[Annotated[dict | None, Param(type="Questionnaire")]]
+    mode: NotRequired[Annotated[str | None, Param(type="code")]]
+    profile: NotRequired[Annotated[str | None, Param(type="canonical")]]
 
 
-validate_params = operation_parameters(
-    Param(
-        "questionnaire-response",
-        required=True,
-        as_body=True,
-        resource_type="QuestionnaireResponse",
-    ),
-    Param("questionnaire", resource_type="Questionnaire"),
-    Param("mode", kind="value"),
-    Param("profile", kind="value"),
-)
+validate_params = operation_parameters(ValidateParams)
 
 
 @router.post("/QuestionnaireResponse/$validate")
