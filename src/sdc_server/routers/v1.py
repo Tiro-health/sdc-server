@@ -1,15 +1,12 @@
 import logging
-from typing import Annotated, NotRequired, TypedDict
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fhir_sdc import extract as sdc_extract
+from pydantic import BaseModel
 
-from sdc_server.fhir_parameters import (
-    Param,
-    operation_parameters,
-    operation_request_body,
-)
+from sdc_server.fhir_parameters import OperationParams, Param
 from sdc_server.structure_definitions import get_structure_definition_loader
 from sdc_server.utils import (
     FhirJSONResponse,
@@ -69,27 +66,16 @@ def capability_statement():
     }
 
 
-class ExtractParams(TypedDict):
+class ExtractParams(OperationParams):
     questionnaire_response: Annotated[
         dict, Param(as_body=True, type="QuestionnaireResponse")
     ]
     questionnaire: Annotated[dict, Param(type="Questionnaire")]
 
 
-extract_params = operation_parameters(ExtractParams)
-
-
-@router.post(
-    "/QuestionnaireResponse/$extract",
-    openapi_extra={
-        "requestBody": operation_request_body(
-            ExtractParams,
-            description="A FHIR `Parameters` resource, or a bare `QuestionnaireResponse` body.",
-        )
-    },
-)
+@router.post("/QuestionnaireResponse/$extract")
 def questionnaire_response_extract(
-    params: Annotated[ExtractParams, Depends(extract_params)],
+    params: ExtractParams,
     response_content_type: str = Depends(
         client_preferred_content_type(
             "application/fhir+json",
@@ -120,8 +106,8 @@ def questionnaire_response_extract(
       `OperationOutcome`. Split the Questionnaire so each extraction context
       yields one shape.
     """
-    q = params["questionnaire"]
-    qr = params["questionnaire_response"]
+    q = params.questionnaire
+    qr = params.questionnaire_response
 
     loader = get_structure_definition_loader()
     extractor = sdc_extract.DefinitionBasedExtractor(loader, allow_logical_models=True)
@@ -162,7 +148,7 @@ def questionnaire_response_extract(
     return FhirJSONResponse(bundle_transaction(fhir_entries))
 
 
-class PopulateContext(TypedDict):
+class PopulateContext(BaseModel):
     """One SDC `$populate` `context` entry: an alias `name` and its `content`
     (an inline resource or a Reference). Parsed as a nested multi-part spec —
     the field `Param`s drive sub-part parsing and required-validation, so a
@@ -172,27 +158,16 @@ class PopulateContext(TypedDict):
     content: Annotated[dict, Param(allowed_types=("Resource", "Reference"))]
 
 
-class PopulateParams(TypedDict):
+class PopulateParams(OperationParams):
     questionnaire: Annotated[dict, Param(as_body=True, type="Questionnaire")]
-    subject: NotRequired[Annotated[dict, Param(type="Reference")]]
-    context: NotRequired[Annotated[list[PopulateContext], Param()]]
-    local: NotRequired[Annotated[bool, Param(type="boolean")]]
+    subject: Annotated[dict | None, Param(type="Reference")] = None
+    context: Annotated[list[PopulateContext], Param()] = []
+    local: Annotated[bool | None, Param(type="boolean")] = None
 
 
-populate_params = operation_parameters(PopulateParams)
-
-
-@router.post(
-    "/Questionnaire/$populate",
-    openapi_extra={
-        "requestBody": operation_request_body(
-            PopulateParams,
-            description="A FHIR `Parameters` resource, or a bare `Questionnaire` body.",
-        )
-    },
-)
+@router.post("/Questionnaire/$populate")
 def questionnaire_populate(
-    params: Annotated[PopulateParams, Depends(populate_params)],
+    params: PopulateParams,
     response_content_type: str = Depends(
         client_preferred_content_type(
             "application/fhir+json",
@@ -214,7 +189,7 @@ def questionnaire_populate(
     up (parameter parsing, validation, conformance) and returns a `501`
     OperationOutcome until the engine lands.
     """
-    questionnaire = params["questionnaire"]
+    questionnaire = params.questionnaire
 
     # TODO(engine): run population (observation/expression/context based) and
     # return a `Parameters` resource whose `response` part is the populated
@@ -222,29 +197,18 @@ def questionnaire_populate(
     raise operation_not_implemented("populate")
 
 
-class ValidateParams(TypedDict):
+class ValidateParams(OperationParams):
     questionnaire_response: Annotated[
         dict, Param(as_body=True, type="QuestionnaireResponse")
     ]
-    questionnaire: NotRequired[Annotated[dict, Param(type="Questionnaire")]]
-    mode: NotRequired[Annotated[str, Param(type="code")]]
-    profile: NotRequired[Annotated[str, Param(type="canonical")]]
+    questionnaire: Annotated[dict | None, Param(type="Questionnaire")] = None
+    mode: Annotated[str | None, Param(type="code")] = None
+    profile: Annotated[str | None, Param(type="canonical")] = None
 
 
-validate_params = operation_parameters(ValidateParams)
-
-
-@router.post(
-    "/QuestionnaireResponse/$validate",
-    openapi_extra={
-        "requestBody": operation_request_body(
-            ValidateParams,
-            description="A FHIR `Parameters` resource, or a bare `QuestionnaireResponse` body.",
-        )
-    },
-)
+@router.post("/QuestionnaireResponse/$validate")
 def questionnaire_response_validate(
-    params: Annotated[ValidateParams, Depends(validate_params)],
+    params: ValidateParams,
     response_content_type: str = Depends(
         client_preferred_content_type(
             "application/fhir+json",
@@ -268,7 +232,7 @@ def questionnaire_response_validate(
     up (parameter parsing, validation, conformance) and returns a `501`
     OperationOutcome until the engine lands.
     """
-    qr = params["questionnaire_response"]
+    qr = params.questionnaire_response
 
     # TODO(engine): validate the QuestionnaireResponse against its Questionnaire
     # (required items, answer cardinality/type, constraints) and return the

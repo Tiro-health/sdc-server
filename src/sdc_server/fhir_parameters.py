@@ -1,21 +1,17 @@
-"""Reading named entries from a FHIR Parameters resource, plus a centralized
-operation-parameter preprocessor used as a FastAPI dependency."""
+"""Reading named entries from a FHIR Parameters resource, plus `OperationParams`
+— a Pydantic base that turns a spec model into a FastAPI request body: it parses
+the FHIR `Parameters` (or bare-resource) wire format into typed fields AND emits
+the matching OpenAPI request-body schema, both driven by the same `Param`-
+annotated fields. A route needs only `params: MySpec` — no dependency wiring and
+no `openapi_extra`."""
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import (
-    Any,
-    Awaitable,
-    Callable,
-    ForwardRef,
-    Literal,
-    get_args,
-    get_origin,
-    get_type_hints,
-    is_typeddict,
-)
+from typing import Any, Literal, get_args, get_origin
 
-from fastapi import Request
+from pydantic import BaseModel, GetJsonSchemaHandler, model_validator
+from pydantic.json_schema import JsonSchemaValue
+from pydantic_core import CoreSchema
 
 from sdc_server.utils import OperationOutcomeException
 
@@ -67,42 +63,41 @@ def read_param(parameters: dict, name: str, repeats: bool = False) -> Any:
     cardinality (a list — `[]` when none — vs the first occurrence, or None).
 
     Multi-part (`part`) params are not handled here; they need a nested spec, so
-    use `operation_parameters`."""
+    declare an `OperationParams` model instead."""
     return _read(_entries(parameters), name, repeats)
 
 
-# --- centralized operation-parameter preprocessor ---------------------------
+# --- parameter spec ---------------------------------------------------------
 
 
 @dataclass(frozen=True, slots=True)
 class Param:
     """A single operation parameter spec, mirroring `OperationDefinition.parameter`.
 
-    Cardinality follows FHIR — `min`/`max` — so `required` ≡ `min >= 1` and
-    `repeats` ≡ `max != 1`. These are NOT authored on the annotation: they are
-    derived from the spec TypedDict's Python type by `_build_params` — `min`
-    from whether the field is `NotRequired`, `max` from whether the field is a
-    `list[...]`. The carried shape (`resource` / `value[x]` / `part`) is
-    likewise not declared here; it's inferred from the body's keys at parse
-    time (the `Parameters` invariant guarantees exactly one of the three per
-    entry).
+    Used as `Annotated` metadata on an `OperationParams` model field, e.g.
+    `Annotated[dict, Param(type="Questionnaire")]`. Cardinality follows FHIR —
+    `min`/`max`, with `required` ≡ `min >= 1` and `repeats` ≡ `max != 1` — but
+    is NOT authored here: it is derived from the field's Python type by
+    `_build_params` — `min` from whether the field is required (no default),
+    `max` from whether the field is a `list[...]`. The carried shape
+    (`resource` / `value[x]` / `part`) is likewise not declared; it's inferred
+    from the body's keys at parse time (the `Parameters` invariant guarantees
+    exactly one of the three per entry).
 
     `type` / `allowed_types` are carried as metadata only — the FHIR type and,
-    for choice/`Reference` params, the acceptable target types — so a
-    conformance `OperationDefinition` can be generated from these specs. They
-    are NOT validated against the request; this server has no FHIR type-checking
+    for choice/`Reference` params, the acceptable target types. They drive the
+    generated request-body schema (`value[x]` vs `resource`) but are NOT
+    validated against the request; this server has no FHIR type-checking
     infrastructure.
 
     `as_body` (single params only) lets the param arrive as the bare request
     body — the FHIR "resource as body" invocation. The bare body is accepted
     as-is; its type is not checked.
 
-    When used as `Annotated` metadata on a spec TypedDict (see
-    `operation_parameters`), `name` defaults to the field name with underscores
-    turned back into hyphens; set it explicitly only to override that mapping.
-    `parts` is not set in annotations — it's resolved by `operation_parameters`
-    from a multi-part param's element TypedDict (e.g. `list[PopulateContext]`),
-    making part parsing recursive and spec-driven.
+    `name` defaults to the field name with underscores turned back into hyphens;
+    set it explicitly only to override that mapping. `parts` is not authored —
+    it's resolved by `_build_params` from a multi-part param's element model
+    (e.g. `list[PopulateContext]`), making part parsing recursive and spec-driven.
     """
 
     name: str | None = None  # FHIR parameter name; defaults to the field name
@@ -137,7 +132,7 @@ class Param:
 
     @property
     def key(self) -> str:
-        """Typed-dict key for this param: FHIR hyphens become underscores."""
+        """Model-field key for this param: FHIR hyphens become underscores."""
         return self.fhir_name.replace("-", "_")
 
 
@@ -152,25 +147,19 @@ def _absent(val: Any, param: Param) -> bool:
     return val == [] if param.repeats else val is None
 
 
-def _find_param(hint: Any) -> Param | None:
-    """The first `Param` carried in an `Annotated[...]` hint, searching nested
-    type args so `NotRequired[Annotated[T, Param(...)]]` works regardless of
-    whether `get_type_hints` strips the `NotRequired` wrapper."""
-    for arg in get_args(hint):
-        if isinstance(arg, Param):
-            return arg
-        found = _find_param(arg)
-        if found is not None:
-            return found
-    return None
+def _is_list(annotation: Any) -> bool:
+    """Whether the field type is a `list[...]` (ignoring `X | None` wrappers)."""
+    if get_origin(annotation) is list:
+        return True
+    return any(_is_list(arg) for arg in get_args(annotation))
 
 
-def _element_spec(hint: Any) -> tuple[Param, ...]:
-    """The nested param spec for a multi-part param: if the hint's type carries
-    a TypedDict element (e.g. `list[PopulateContext]`), build its params
+def _element_spec(annotation: Any) -> tuple[Param, ...]:
+    """The nested param spec for a multi-part param: if the field type carries a
+    `BaseModel` element (e.g. `list[PopulateContext]`), build its params
     recursively; else empty. This is what makes `part` parsing spec-driven."""
-    for arg in get_args(hint):
-        if is_typeddict(arg):
+    for arg in get_args(annotation):
+        if isinstance(arg, type) and issubclass(arg, BaseModel):
             return _build_params(arg)
         nested = _element_spec(arg)
         if nested:
@@ -178,48 +167,24 @@ def _element_spec(hint: Any) -> tuple[Param, ...]:
     return ()
 
 
-def _is_list(hint: Any) -> bool:
-    """Whether the annotated type is a `list[...]` (ignoring `Annotated`
-    metadata and any `NotRequired` / `X | None` wrappers)."""
-    for arg in get_args(hint):
-        if get_origin(arg) is list:
-            return True
-        if _is_list(arg):
-            return True
-    return get_origin(hint) is list
-
-
-def _build_params(spec: type) -> tuple[Param, ...]:
-    """Introspect a spec TypedDict into resolved `Param`s. Cardinality is derived
-    from the Python type, not authored on the annotation: `min` from whether the
-    field is `NotRequired` (via `__required_keys__`), `max` from whether it is a
-    `list[...]`. `name` defaults to the field name (hyphenated) and `parts` is
-    resolved from a nested element TypedDict (recursively).
-
-    `__required_keys__` is only reliable when the spec's module does NOT use
-    `from __future__ import annotations` (PEP 563 leaves the annotations
-    unevaluated — as `str` or `ForwardRef` — so the TypedDict cannot see the
-    `NotRequired` wrappers and marks every key required). Guard against that
-    footgun loudly."""
-    if any(isinstance(v, (str, ForwardRef)) for v in spec.__annotations__.values()):
-        raise TypeError(
-            f"{spec.__name__}: spec TypedDict modules must not use "
-            "'from __future__ import annotations' — it breaks NotRequired "
-            "detection (__required_keys__)."
-        )
-    required_keys = spec.__required_keys__
+def _build_params(spec: type[BaseModel]) -> tuple[Param, ...]:
+    """Introspect a spec model's fields into resolved `Param`s. Each field's
+    `Param` metadata is read from its annotation; cardinality is derived from the
+    Python type (`min` from `FieldInfo.is_required()`, `max` from `list[...]`),
+    `name` defaults to the field name (hyphenated), and `parts` is resolved from
+    a nested element model (recursively)."""
     params = []
-    for field, hint in get_type_hints(spec, include_extras=True).items():
-        meta = _find_param(hint)
+    for field_name, info in spec.model_fields.items():
+        meta = next((m for m in info.metadata if isinstance(m, Param)), None)
         if meta is None:
-            raise TypeError(f"{spec.__name__}.{field} is missing a Param annotation")
+            raise TypeError(f"{spec.__name__}.{field_name} is missing a Param annotation")
         params.append(
             replace(
                 meta,
-                name=meta.name or field.replace("_", "-"),
-                min=1 if field in required_keys else 0,
-                max="*" if _is_list(hint) else 1,
-                parts=_element_spec(hint),
+                name=meta.name or field_name.replace("_", "-"),
+                min=1 if info.is_required() else 0,
+                max="*" if _is_list(info.annotation) else 1,
+                parts=_element_spec(info.annotation),
             )
         )
     return tuple(params)
@@ -240,74 +205,84 @@ def _missing(value: Any, params: tuple[Param, ...], prefix: str = "") -> list[st
     return names
 
 
-def operation_parameters(spec: type) -> Callable[..., Awaitable[dict]]:
-    """Build a FastAPI dependency that parses an operation's request body into a
-    flat dict matching `spec` — a TypedDict whose fields are annotated with
-    `Param` metadata, e.g. `Annotated[dict, Param(type="Questionnaire")]`.
+def _parse_body(params: tuple[Param, ...], data: Any) -> dict:
+    """Parse a request body into a flat dict keyed by each param's model-field
+    key. The body may be a FHIR `Parameters` resource or — when a param is
+    `as_body` — the bare resource itself. Missing `required` params raise a
+    `400` OperationOutcome, as does a non-object body. A bare body is accepted
+    as-is; its type is not checked."""
+    if not isinstance(data, dict):
+        raise _structure_error("Request body must be a JSON object")
 
-    The Python type is the single source of truth. The field name keys the
-    result dict and, with underscores turned back into hyphens, supplies the
-    FHIR parameter name (override via `Param(name=...)`). Cardinality is derived
-    from the type too: a `NotRequired` field is optional (`min=0`), a `list[...]`
-    field repeats (`max="*"`). `Param` carries only the FHIR-specific metadata
-    that can't be typed (`type`, `allowed_types`, `as_body`). Keeping the result
-    type and the parse spec in one declaration means they cannot drift.
-
-    The body may be either a FHIR `Parameters` resource or — when a param is
-    marked `as_body` — the bare resource itself (the FHIR "resource as body"
-    invocation). Missing `required` params raise a `400` OperationOutcome, as
-    does a malformed body. A bare body is accepted as-is; its type is not
-    checked.
-    """
-    params = _build_params(spec)
     body_param = next((p for p in params if p.as_body), None)
+    result: dict = {}
+    rtype = data.get("resourceType")
 
-    async def _dep(request: Request) -> dict:
-        try:
-            body = await request.json()
-        except Exception:
-            raise _structure_error("Request body is not valid JSON")
-        if not isinstance(body, dict):
-            raise _structure_error("Request body must be a JSON object")
+    if rtype == "Parameters":
+        entries = _entries(data)
+        for p in params:
+            result[p.key] = _read(entries, p.fhir_name, p.repeats, p.parts)
+    elif body_param is not None:
+        for p in params:
+            result[p.key] = data if p is body_param else ([] if p.repeats else None)
+    else:
+        raise _structure_error(f"Expected Parameters resource, got {rtype!r}")
 
-        result: dict = {}
-        rtype = body.get("resourceType")
-
-        if rtype == "Parameters":
-            entries = _entries(body)
-            for p in params:
-                result[p.key] = _read(entries, p.fhir_name, p.repeats, p.parts)
-        elif body_param is not None:
-            for p in params:
-                result[p.key] = body if p is body_param else ([] if p.repeats else None)
-        else:
-            raise _structure_error(f"Expected Parameters resource, got {rtype!r}")
-
-        missing = _missing(result, params)
-        if missing:
-            raise OperationOutcomeException(
-                status_code=400,
-                issues=[
-                    {
-                        "severity": "error",
-                        "code": "required",
-                        "diagnostics": f"Missing required parameter: {name}",
-                    }
-                    for name in missing
-                ],
-            )
-        return result
-
-    return _dep
+    missing = _missing(result, params)
+    if missing:
+        raise OperationOutcomeException(
+            status_code=400,
+            issues=[
+                {
+                    "severity": "error",
+                    "code": "required",
+                    "diagnostics": f"Missing required parameter: {name}",
+                }
+                for name in missing
+            ],
+        )
+    return result
 
 
-# --- OpenAPI request-body schema generation (for Swagger docs) --------------
+class OperationParams(BaseModel):
+    """Base for a FHIR operation's parameter model. A subclass declares one field
+    per parameter, annotated with `Param`; FastAPI then treats the subclass as
+    the request body, so a route needs only `params: MySpec` — no dependency and
+    no `openapi_extra`.
+
+    The model does double duty, both driven off the same `Param`-annotated fields:
+
+      - parsing: a `mode="before"` validator turns the incoming FHIR `Parameters`
+        (or bare-resource) body into the flat field dict, raising a `400`
+        OperationOutcome for a malformed body or a missing required param.
+      - docs: `__get_pydantic_json_schema__` replaces the auto flat-model schema
+        with the FHIR `Parameters` wire-format schema (plus a minimal example),
+        so Swagger documents — and can exercise — the real request body.
+
+    The resolved spec is computed once per subclass at class-creation time, so a
+    field missing its `Param` annotation fails loudly at import."""
+
+    @classmethod
+    def __pydantic_init_subclass__(cls, **kwargs: Any) -> None:
+        super().__pydantic_init_subclass__(**kwargs)
+        cls.__fhir_params__ = _build_params(cls)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _parse_parameters(cls, data: Any) -> Any:
+        return _parse_body(cls.__fhir_params__, data)
+
+    @classmethod
+    def __get_pydantic_json_schema__(
+        cls, core_schema: CoreSchema, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
+        return parameters_schema(cls.__fhir_params__)
+
+
+# --- OpenAPI request-body schema generation ---------------------------------
 #
-# The operation endpoints parse the body via the `operation_parameters`
-# dependency (reading `Request` directly), so FastAPI cannot introspect a
-# request body for them. These helpers derive an OpenAPI `requestBody` from the
-# SAME `Param` specs (`_build_params`) so Swagger documents — and can exercise —
-# the real FHIR `Parameters` wire format, not the flat parsed dict.
+# Derived from the same `Param` specs as parsing, so Swagger documents the real
+# FHIR `Parameters` wire format rather than the flat parsed model.
 
 
 # FHIR datatypes carried as `value[x]`; everything else is an inline `resource`.
@@ -401,14 +376,12 @@ def _example_entry(param: Param) -> dict:
     return {"name": param.fhir_name, _value_key(fhir_type): sample}
 
 
-def operation_request_body(spec: type, *, description: str | None = None) -> dict:
-    """An OpenAPI `requestBody` object for an operation, derived from its `Param`
-    spec TypedDict. Describes the FHIR `Parameters` wire format and ships a
-    minimal valid example (required params only). Attach to a route via
-    `@router.post(..., openapi_extra={"requestBody": operation_request_body(Spec)})`."""
-    params = _build_params(spec)
+def parameters_schema(params: tuple[Param, ...]) -> JsonSchemaValue:
+    """A JSON Schema for the FHIR `Parameters` request body of an operation,
+    derived from its `Param` specs, with a minimal valid example (required
+    params only) embedded so Swagger pre-fills "Try it out"."""
     entries = [_entry_schema(p) for p in params]
-    schema = {
+    return {
         "type": "object",
         "title": "FHIR Parameters",
         "required": ["resourceType", "parameter"],
@@ -419,18 +392,8 @@ def operation_request_body(spec: type, *, description: str | None = None) -> dic
                 "items": {"oneOf": entries} if len(entries) > 1 else entries[0],
             },
         },
-    }
-    if description:
-        schema["description"] = description
-    example = {
-        "resourceType": "Parameters",
-        "parameter": [_example_entry(p) for p in params if p.required],
-    }
-    content = {"schema": schema, "example": example}
-    return {
-        "required": True,
-        "content": {
-            "application/fhir+json": content,
-            "application/json": content,
+        "example": {
+            "resourceType": "Parameters",
+            "parameter": [_example_entry(p) for p in params if p.required],
         },
     }
