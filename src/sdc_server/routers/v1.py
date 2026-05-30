@@ -5,7 +5,11 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fhir_sdc import extract as sdc_extract
 
-from sdc_server.fhir_parameters import Param, operation_parameters
+from sdc_server.fhir_parameters import (
+    Param,
+    operation_parameters,
+    operation_request_body,
+)
 from sdc_server.structure_definitions import get_structure_definition_loader
 from sdc_server.utils import (
     FhirJSONResponse,
@@ -67,21 +71,31 @@ def capability_statement():
 
 class ExtractParams(TypedDict):
     questionnaire_response: Annotated[
-        dict, Param(min=1, as_body=True, type="QuestionnaireResponse")
+        dict, Param(as_body=True, type="QuestionnaireResponse")
     ]
-    questionnaire: Annotated[dict, Param(min=1, type="Questionnaire")]
+    questionnaire: Annotated[dict, Param(type="Questionnaire")]
 
 
 extract_params = operation_parameters(ExtractParams)
 
 
-@router.post("/QuestionnaireResponse/$extract")
+@router.post(
+    "/QuestionnaireResponse/$extract",
+    openapi_extra={
+        "requestBody": operation_request_body(
+            ExtractParams,
+            description="A FHIR `Parameters` resource, or a bare `QuestionnaireResponse` body.",
+        )
+    },
+)
 def questionnaire_response_extract(
     params: Annotated[ExtractParams, Depends(extract_params)],
-    response_content_type: str = Depends(client_preferred_content_type(
-        "application/fhir+json",
-        "application/json",
-    )),
+    response_content_type: str = Depends(
+        client_preferred_content_type(
+            "application/fhir+json",
+            "application/json",
+        )
+    ),
 ) -> Response:
     """
     FHIR SDC `$extract` operation — definition-based extraction.
@@ -154,29 +168,37 @@ class PopulateContext(TypedDict):
     the field `Param`s drive sub-part parsing and required-validation, so a
     `context` missing `content` fails as `context.content`."""
 
-    name: Annotated[str, Param(min=1, type="string")]
-    content: Annotated[dict, Param(min=1, type="Resource", allowed_types=("Resource", "Reference"))]
+    name: Annotated[str, Param(type="string")]
+    content: Annotated[dict, Param(allowed_types=("Resource", "Reference"))]
 
 
 class PopulateParams(TypedDict):
-    questionnaire: Annotated[
-        dict, Param(min=1, as_body=True, type="Questionnaire")
-    ]
-    subject: NotRequired[Annotated[dict | None, Param(type="Reference")]]
-    context: Annotated[list[PopulateContext], Param(max="*")]
-    local: NotRequired[Annotated[bool | None, Param(type="boolean")]]
+    questionnaire: Annotated[dict, Param(as_body=True, type="Questionnaire")]
+    subject: NotRequired[Annotated[dict, Param(type="Reference")]]
+    context: NotRequired[Annotated[list[PopulateContext], Param()]]
+    local: NotRequired[Annotated[bool, Param(type="boolean")]]
 
 
 populate_params = operation_parameters(PopulateParams)
 
 
-@router.post("/Questionnaire/$populate")
+@router.post(
+    "/Questionnaire/$populate",
+    openapi_extra={
+        "requestBody": operation_request_body(
+            PopulateParams,
+            description="A FHIR `Parameters` resource, or a bare `Questionnaire` body.",
+        )
+    },
+)
 def questionnaire_populate(
     params: Annotated[PopulateParams, Depends(populate_params)],
-    response_content_type: str = Depends(client_preferred_content_type(
-        "application/fhir+json",
-        "application/json",
-    )),
+    response_content_type: str = Depends(
+        client_preferred_content_type(
+            "application/fhir+json",
+            "application/json",
+        )
+    ),
 ) -> Response:
     """
     FHIR SDC `$populate` operation — pre-fill a QuestionnaireResponse.
@@ -202,23 +224,33 @@ def questionnaire_populate(
 
 class ValidateParams(TypedDict):
     questionnaire_response: Annotated[
-        dict, Param(min=1, as_body=True, type="QuestionnaireResponse")
+        dict, Param(as_body=True, type="QuestionnaireResponse")
     ]
-    questionnaire: NotRequired[Annotated[dict | None, Param(type="Questionnaire")]]
-    mode: NotRequired[Annotated[str | None, Param(type="code")]]
-    profile: NotRequired[Annotated[str | None, Param(type="canonical")]]
+    questionnaire: NotRequired[Annotated[dict, Param(type="Questionnaire")]]
+    mode: NotRequired[Annotated[str, Param(type="code")]]
+    profile: NotRequired[Annotated[str, Param(type="canonical")]]
 
 
 validate_params = operation_parameters(ValidateParams)
 
 
-@router.post("/QuestionnaireResponse/$validate")
+@router.post(
+    "/QuestionnaireResponse/$validate",
+    openapi_extra={
+        "requestBody": operation_request_body(
+            ValidateParams,
+            description="A FHIR `Parameters` resource, or a bare `QuestionnaireResponse` body.",
+        )
+    },
+)
 def questionnaire_response_validate(
     params: Annotated[ValidateParams, Depends(validate_params)],
-    response_content_type: str = Depends(client_preferred_content_type(
-        "application/fhir+json",
-        "application/json",
-    )),
+    response_content_type: str = Depends(
+        client_preferred_content_type(
+            "application/fhir+json",
+            "application/json",
+        )
+    ),
 ) -> Response:
     """
     FHIR SDC `$validate` operation — validate a QuestionnaireResponse against

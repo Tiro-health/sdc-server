@@ -1,8 +1,10 @@
 """Unit tests for the Parameters readers and the `operation_parameters`
 preprocessor — including spec-driven multi-part (`parts`) parsing used by SDC
-`$populate` `context`."""
-from __future__ import annotations
+`$populate` `context`.
 
+Spec TypedDicts must NOT use `from __future__ import annotations` — it breaks
+the `NotRequired`-based cardinality derivation (`_build_params` guards against
+it)."""
 import asyncio
 from typing import Annotated, TypedDict
 
@@ -19,15 +21,16 @@ class _FakeRequest:
         return self._body
 
 
-# Module-level so `get_type_hints` can resolve the nested spec (function-local
-# TypedDicts aren't in module globals under `from __future__ import annotations`).
+# Module-level so `get_type_hints` can resolve the nested spec by name.
+# Cardinality is derived from the type: `name`/`content` are required (total
+# keys); `context` repeats (`list[...]`).
 class _NestedContext(TypedDict):
-    name: Annotated[str, Param(min=1)]
-    content: Annotated[dict, Param(min=1)]
+    name: Annotated[str, Param()]
+    content: Annotated[dict, Param()]
 
 
 class _NestedSpec(TypedDict):
-    context: Annotated[list[_NestedContext], Param(max="*")]
+    context: Annotated[list[_NestedContext], Param()]
 
 
 def test_operation_parameters_parses_nested_parts():
@@ -87,7 +90,7 @@ def test_operation_parameters_derives_fhir_name_from_field():
     FHIR `questionnaire-response` parameter, no name repeated in the Param."""
 
     class Spec(TypedDict):
-        questionnaire_response: Annotated[dict, Param(min=1, type="QuestionnaireResponse")]
+        questionnaire_response: Annotated[dict, Param(type="QuestionnaireResponse")]
 
     dep = operation_parameters(Spec)
     body = {
