@@ -1,40 +1,28 @@
-"""Unit tests for the Parameters readers and the `operation_parameters`
-preprocessor — including spec-driven multi-part (`parts`) parsing used by SDC
-`$populate` `context`."""
-from __future__ import annotations
-
-import asyncio
-from typing import Annotated, TypedDict
+"""Unit tests for the Parameters readers and the `OperationParams` model —
+including spec-driven multi-part (`parts`) parsing used by SDC `$populate`
+`context`, the FHIR-name derivation, and the generated request-body schema."""
+from typing import Annotated
 
 import pytest
+from pydantic import BaseModel
 
-from sdc_server.fhir_parameters import Param, operation_parameters, read_param
-
-
-class _FakeRequest:
-    def __init__(self, body: object) -> None:
-        self._body = body
-
-    async def json(self) -> object:
-        return self._body
+from sdc_server.fhir_parameters import OperationParams, Param, read_param
+from sdc_server.utils import OperationOutcomeException
 
 
-# Module-level so `get_type_hints` can resolve the nested spec (function-local
-# TypedDicts aren't in module globals under `from __future__ import annotations`).
-class _NestedContext(TypedDict):
-    name: Annotated[str, Param(min=1)]
-    content: Annotated[dict, Param(min=1)]
+class _NestedContext(BaseModel):
+    name: Annotated[str, Param()]
+    content: Annotated[dict, Param()]
 
 
-class _NestedSpec(TypedDict):
-    context: Annotated[list[_NestedContext], Param(max="*")]
+class _NestedSpec(OperationParams):
+    context: Annotated[list[_NestedContext], Param()] = []
 
 
-def test_operation_parameters_parses_nested_parts():
-    """A multi-part param whose element is a Param-annotated TypedDict parses
-    each occurrence into a dict keyed by the declared sub-fields, recursing into
-    each sub-part's inferred shape (value[x] / resource)."""
-    dep = operation_parameters(_NestedSpec)
+def test_model_parses_nested_parts():
+    """A multi-part param whose element is a Param-annotated model parses each
+    occurrence into the declared sub-fields, recursing into each sub-part's
+    inferred shape (value[x] / resource)."""
     body = {
         "resourceType": "Parameters",
         "parameter": [
@@ -54,7 +42,7 @@ def test_operation_parameters_parses_nested_parts():
             },
         ],
     }
-    result = asyncio.run(dep(_FakeRequest(body)))
+    result = _NestedSpec.model_validate(body).model_dump()
     assert result == {
         "context": [
             {"name": "patient", "content": {"resourceType": "Patient", "id": "p1"}},
@@ -82,37 +70,63 @@ def test_read_param_repeating_values():
     assert read_param(parameters, "code", repeats=False) == "a"
 
 
-def test_operation_parameters_derives_fhir_name_from_field():
+def test_model_derives_fhir_name_from_field():
     """The field name is the source of truth: `questionnaire_response` reads the
     FHIR `questionnaire-response` parameter, no name repeated in the Param."""
 
-    class Spec(TypedDict):
-        questionnaire_response: Annotated[dict, Param(min=1, type="QuestionnaireResponse")]
+    class Spec(OperationParams):
+        questionnaire_response: Annotated[dict, Param(type="QuestionnaireResponse")]
 
-    dep = operation_parameters(Spec)
     body = {
         "resourceType": "Parameters",
         "parameter": [
             {"name": "questionnaire-response", "resource": {"resourceType": "QuestionnaireResponse"}}
         ],
     }
-    result = asyncio.run(dep(_FakeRequest(body)))
-    assert result == {"questionnaire_response": {"resourceType": "QuestionnaireResponse"}}
+    assert Spec.model_validate(body).questionnaire_response == {
+        "resourceType": "QuestionnaireResponse"
+    }
 
 
-def test_operation_parameters_requires_param_annotation():
-    """A field without Param metadata is a wiring bug — fail loudly at build."""
+def test_model_missing_required_raises_operation_outcome():
+    """A missing required param raises a 400 OperationOutcome from the parsing
+    validator, not Pydantic's own ValidationError."""
 
-    class Bad(TypedDict):
-        questionnaire: dict
+    class Spec(OperationParams):
+        questionnaire: Annotated[dict, Param(type="Questionnaire")]
+
+    with pytest.raises(OperationOutcomeException) as exc:
+        Spec.model_validate({"resourceType": "Parameters", "parameter": []})
+    assert exc.value.status_code == 400
+    assert exc.value.detail["issue"][0]["code"] == "required"
+
+
+def test_model_requires_param_annotation():
+    """A field without Param metadata is a wiring bug — fail loudly at class
+    definition (import), not at first request."""
 
     with pytest.raises(TypeError, match="missing a Param annotation"):
-        operation_parameters(Bad)
+
+        class Bad(OperationParams):
+            questionnaire: dict
+
+
+def test_model_json_schema_is_parameters_envelope():
+    """The model's JSON Schema is the FHIR Parameters wire format (what FastAPI
+    puts in the OpenAPI request body), not the flat field model."""
+
+    class Spec(OperationParams):
+        questionnaire: Annotated[dict, Param(type="Questionnaire")]
+
+    schema = Spec.model_json_schema()
+    assert schema["properties"]["resourceType"]["const"] == "Parameters"
+    assert schema["properties"]["parameter"]["type"] == "array"
+    assert schema["example"]["resourceType"] == "Parameters"
 
 
 def test_populate_parses_context_without_error(client):
     """A $populate body carrying multi-part `context` parses cleanly and reaches
-    the (stubbed) engine rather than failing in the preprocessor."""
+    the (stubbed) engine rather than failing in the parsing validator."""
     body = {
         "resourceType": "Parameters",
         "parameter": [

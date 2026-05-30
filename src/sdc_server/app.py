@@ -3,6 +3,7 @@ import time
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
@@ -79,6 +80,30 @@ async def operation_outcome_exception_handler(
         status_code=exc.status_code,
         content=exc.detail,
         media_type="application/fhir+json",
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def request_validation_exception_handler(
+    request: Request, exc: RequestValidationError
+):
+    """Body that FastAPI/Pydantic couldn't parse (e.g. malformed JSON) before the
+    operation model's own validator runs. Return a FHIR OperationOutcome rather
+    than FastAPI's default `{"detail": ...}` so the error contract stays FHIR."""
+    return JSONResponse(
+        status_code=400,
+        media_type="application/fhir+json",
+        content={
+            "resourceType": "OperationOutcome",
+            "issue": [
+                {
+                    "severity": "error",
+                    "code": "structure",
+                    "diagnostics": err.get("msg", "Invalid request body"),
+                }
+                for err in exc.errors()
+            ],
+        },
     )
 
 
