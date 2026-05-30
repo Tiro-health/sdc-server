@@ -1,12 +1,12 @@
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 from fastapi.responses import Response
 from fhir_sdc import extract as sdc_extract
 from pydantic import BaseModel
 
-from sdc_server.fhir_parameters import OperationParams, Param
+from sdc_server.fhir_parameters import OperationParams, Param, operation_examples
 from sdc_server.structure_definitions import get_structure_definition_loader
 from sdc_server.utils import (
     FhirJSONResponse,
@@ -75,7 +75,7 @@ class ExtractParams(OperationParams):
 
 @router.post("/QuestionnaireResponse/$extract")
 def questionnaire_response_extract(
-    params: ExtractParams,
+    params: Annotated[ExtractParams, Body(openapi_examples=operation_examples(ExtractParams))],
     response_content_type: str = Depends(
         client_preferred_content_type(
             "application/fhir+json",
@@ -167,7 +167,7 @@ class PopulateParams(OperationParams):
 
 @router.post("/Questionnaire/$populate")
 def questionnaire_populate(
-    params: PopulateParams,
+    params: Annotated[PopulateParams, Body(openapi_examples=operation_examples(PopulateParams))],
     response_content_type: str = Depends(
         client_preferred_content_type(
             "application/fhir+json",
@@ -208,7 +208,7 @@ class ValidateParams(OperationParams):
 
 @router.post("/QuestionnaireResponse/$validate")
 def questionnaire_response_validate(
-    params: ValidateParams,
+    params: Annotated[ValidateParams, Body(openapi_examples=operation_examples(ValidateParams))],
     response_content_type: str = Depends(
         client_preferred_content_type(
             "application/fhir+json",
