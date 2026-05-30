@@ -376,10 +376,18 @@ def _example_entry(param: Param) -> dict:
     return {"name": param.fhir_name, _value_key(fhir_type): sample}
 
 
+def _parameters_example(params: tuple[Param, ...]) -> dict:
+    """A minimal valid FHIR `Parameters` body (required params only)."""
+    return {
+        "resourceType": "Parameters",
+        "parameter": [_example_entry(p) for p in params if p.required],
+    }
+
+
 def parameters_schema(params: tuple[Param, ...]) -> JsonSchemaValue:
     """A JSON Schema for the FHIR `Parameters` request body of an operation,
-    derived from its `Param` specs, with a minimal valid example (required
-    params only) embedded so Swagger pre-fills "Try it out"."""
+    derived from its `Param` specs, with a minimal valid example embedded so
+    Swagger pre-fills "Try it out"."""
     entries = [_entry_schema(p) for p in params]
     return {
         "type": "object",
@@ -392,8 +400,32 @@ def parameters_schema(params: tuple[Param, ...]) -> JsonSchemaValue:
                 "items": {"oneOf": entries} if len(entries) > 1 else entries[0],
             },
         },
-        "example": {
-            "resourceType": "Parameters",
-            "parameter": [_example_entry(p) for p in params if p.required],
-        },
+        "example": _parameters_example(params),
     }
+
+
+def operation_examples(spec: type[BaseModel]) -> dict[str, dict]:
+    """OpenAPI `openapi_examples` for an operation — the selectable set shown in
+    the Swagger request-body dropdown, derived from the same `Param` specs.
+
+    Always offers the FHIR `Parameters` invocation. Adds the bare-resource
+    invocation (FHIR "resource as body") only when the `as_body` param is the
+    operation's sole required param — otherwise a bare body would fail
+    required-validation, so it would be a misleading example.
+
+    Attach via `params: Annotated[Spec, Body(openapi_examples=operation_examples(Spec))]`."""
+    params = _build_params(spec)
+    examples: dict[str, dict] = {
+        "parameters": {
+            "summary": "FHIR Parameters resource",
+            "value": _parameters_example(params),
+        }
+    }
+    body_param = next((p for p in params if p.as_body), None)
+    if body_param is not None and [p for p in params if p.required] == [body_param]:
+        fhir_type = _carried_types(body_param)[0]
+        examples["bare"] = {
+            "summary": f"Bare {fhir_type} (resource as body)",
+            "value": {"resourceType": fhir_type},
+        }
+    return examples

@@ -6,7 +6,12 @@ from typing import Annotated
 import pytest
 from pydantic import BaseModel
 
-from sdc_server.fhir_parameters import OperationParams, Param, read_param
+from sdc_server.fhir_parameters import (
+    OperationParams,
+    Param,
+    operation_examples,
+    read_param,
+)
 from sdc_server.utils import OperationOutcomeException
 
 
@@ -122,6 +127,27 @@ def test_model_json_schema_is_parameters_envelope():
     assert schema["properties"]["resourceType"]["const"] == "Parameters"
     assert schema["properties"]["parameter"]["type"] == "array"
     assert schema["example"]["resourceType"] == "Parameters"
+
+
+def test_operation_examples_adds_bare_only_when_as_body_is_sole_required():
+    """The bare-resource example is offered only when `as_body` is the operation's
+    one required param (so a bare body validates); otherwise just `parameters`."""
+
+    class SoleBody(OperationParams):
+        questionnaire: Annotated[dict, Param(as_body=True, type="Questionnaire")]
+        local: Annotated[bool | None, Param(type="boolean")] = None
+
+    class BodyPlusRequired(OperationParams):
+        questionnaire_response: Annotated[
+            dict, Param(as_body=True, type="QuestionnaireResponse")
+        ]
+        questionnaire: Annotated[dict, Param(type="Questionnaire")]
+
+    sole = operation_examples(SoleBody)
+    assert set(sole) == {"parameters", "bare"}
+    assert sole["bare"]["value"] == {"resourceType": "Questionnaire"}
+
+    assert set(operation_examples(BodyPlusRequired)) == {"parameters"}
 
 
 def test_populate_parses_context_without_error(client):
