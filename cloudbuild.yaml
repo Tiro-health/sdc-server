@@ -6,8 +6,10 @@
 # europe-west1-docker.pkg.dev/$PROJECT_ID/public/tiro-sdc-server.
 #
 # Triggers (configured out-of-band; see README):
-#   - push to main      → tags :$SHORT_SHA + :main
-#   - push of a v* tag  → tags :$SHORT_SHA + :$TAG_NAME + :latest
+#   - push to main          → tags :$SHORT_SHA + :main
+#   - push of a vX.Y.Z tag   → tags :$SHORT_SHA + :$TAG_NAME + :latest
+#   - push of a pre-release  → tags :$SHORT_SHA + :$TAG_NAME + :rc
+#     (e.g. v1.2.0-rc1)         pre-releases get the floating :rc, never :latest
 #
 # Manual invocation (no GitHub trigger):
 #   gcloud builds submit --config=cloudbuild.yaml \
@@ -68,7 +70,13 @@ steps:
           TAGS="$$TAGS $$IMAGE:$BRANCH_NAME"
         fi
         if [ -n "$TAG_NAME" ]; then
-          TAGS="$$TAGS $$IMAGE:$TAG_NAME $$IMAGE:latest"
+          TAGS="$$TAGS $$IMAGE:$TAG_NAME"
+          # Semver marks a pre-release with a hyphen (v1.2.0-rc1). Those get the
+          # floating :rc pointer; only final releases move :latest.
+          case "$TAG_NAME" in
+            *-*) TAGS="$$TAGS $$IMAGE:rc" ;;
+            *)   TAGS="$$TAGS $$IMAGE:latest" ;;
+          esac
         fi
 
         # buildx --push needs registry credentials. GAR accepts the same
