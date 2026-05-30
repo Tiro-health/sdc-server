@@ -2,9 +2,9 @@ import logging
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
 
 from sdc_server._build_flags import ALLOW_LICENSE_SKIP
@@ -15,7 +15,7 @@ from sdc_server.integrity_check import (
 )
 from sdc_server.license_gate import LicenseError, bypass_requested, verify_license
 from sdc_server.routers import v1
-from sdc_server.utils import OperationOutcomeException
+from sdc_server.utils import OperationOutcomeException, client_preferred_content_type
 
 logging.basicConfig(level=logging.INFO)
 
@@ -111,6 +111,19 @@ async def request_validation_exception_handler(
 async def global_exception_handler(request: Request, exc: Exception):
     LOGGER.exception("Unhandled exception")
     return JSONResponse(status_code=500, content={"detail": "Internal server error"})
+
+
+@app.get("/", include_in_schema=False)
+async def root(
+    accepts: str = Depends(client_preferred_content_type("application/json", "text/html")),
+):
+    """A browser hitting the root is redirected to the Swagger UI; an API client
+    gets a small JSON pointer instead of a redirect into an HTML page. Browser
+    detection reuses Accept negotiation: `text/html` is only chosen when the
+    client explicitly lists it, so `*/*` (curl) falls back to JSON."""
+    if accepts == "text/html":
+        return RedirectResponse(url="/docs")
+    return JSONResponse({"service": "sdc-server", "docs": "/docs", "fhir_base": "/api/v1"})
 
 
 app.include_router(v1.router, prefix="/api/v1")
